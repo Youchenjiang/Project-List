@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download Progress</title>
+    <style>
+        #container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: conic-gradient(#333 0%, #333 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        #container.done {
+            background: #0f0 !important; /* Green background when download is complete */
+        }
+
+        #container::before {
+            content: "";
+            position: absolute;
+            inset: 15px;
+            background: #222; /* Inner circle background */
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        #number {
+            position: relative;
+            color: #fff;
+            font-size: 3em;
+            text-align: center;
+            z-index: 2; /* Ensure text is above the progress bar */
+        }
+
+        #number span {
+            font-size: 0.5em; /* Smaller font size for percentage symbol */
+        }
+
+        #container.done #number {
+            font-size: 2.5em; /* Adjust font size when download is complete */
+        }
+
+        #container.done #number small {
+            display: block;
+            font-size: 0.5em;
+            margin-top: 5px;
+            color: #0f0; /* Green text for "100% Done" */
+        }
+
+        #cancel-button,
+        #pause-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f5036c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            display: none; /* Buttons are hidden by default */
+        }
+
+        #cancel-button:hover,
+        #pause-button:hover {
+            background-color: #c40256; /* Darker color on hover */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM elements
+            const container = document.querySelector('#container');
+            const number = document.querySelector('#number');
+            const cancelButton = document.querySelector('#cancel-button');
+            const pauseButton = document.querySelector('#pause-button');
+
+            // State variables
+            let isDownloading = false; // Tracks if a download is in progress
+            let isPaused = false; // Tracks if the download is paused
+            let interval; // Stores the interval ID for progress updates
+            let degree = 0; // Tracks the current progress percentage
+
+            // Start download on container click
+            container.addEventListener('click', () => {
+                if (isDownloading) return showToast('Download in progress. Please wait!');
+                if (container.classList.contains('done')) resetStyles(); // Reset if already completed
+                isDownloading = true;
+                showButtons(); // Show pause and cancel buttons
+                interval = setInterval(updateProgress, 100); // Start progress updates
+            });
+
+            // Update progress bar and percentage
+            function updateProgress() {
+                if (isPaused) return; // Skip updates if paused
+                degree += 1;
+                if (degree > 100) {
+                    clearInterval(interval); // Stop updates when complete
+                    number.innerHTML = `<small>100% Done</small>`;
+                    container.classList.add('done'); // Mark as complete
+                    isDownloading = false;
+                    hideButtons(); // Hide buttons after completion
+                } else {
+                    container.style.background = `conic-gradient(#f5036c ${degree}%, #333 0%)`; // Update progress bar
+                    number.innerHTML = `${degree} <span>%</span>`; // Update percentage text
+                }
+            }
+
+            // Cancel download and reset styles
+            cancelButton.addEventListener('click', () => {
+                if (!isDownloading) return showToast('No download in progress to cancel!');
+                clearInterval(interval); // Stop progress updates
+                resetStyles(); // Reset to initial state
+                isDownloading = false;
+                hideButtons(); // Hide buttons
+                showToast('Download canceled!');
+            });
+
+            // Pause or resume the download
+            pauseButton.addEventListener('click', () => {
+                if (!isDownloading) return showToast('No download in progress to pause!');
+                isPaused = !isPaused; // Toggle pause state
+                pauseButton.textContent = isPaused ? 'Resume Download' : 'Pause Download'; // Update button text
+                showToast(isPaused ? 'Download paused!' : 'Download resumed!');
+            });
+
+            // Reset styles to initial state
+            function resetStyles() {
+                container.classList.remove('done');
+                container.style.background = 'conic-gradient(#333 0%, #333 100%)'; // Reset progress bar
+                number.innerHTML = `0<span>%</span>`; // Reset percentage text
+                degree = 0; // Reset progress
+                isPaused = false; // Reset pause state
+                pauseButton.textContent = 'Pause Download'; // Reset button text
+            }
+
+            // Show pause and cancel buttons
+            function showButtons() {
+                pauseButton.style.display = 'inline-block';
+                cancelButton.style.display = 'inline-block';
+            }
+
+            // Hide pause and cancel buttons
+            function hideButtons() {
+                pauseButton.style.display = 'none';
+                cancelButton.style.display = 'none';
+            }
+
+            // Display a toast message
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.textContent = message;
+                Object.assign(toast.style, {
+                    position: 'fixed',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: '#333',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    borderRadius: '5px',
+                    zIndex: '1000'
+                });
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000); // Remove toast after 3 seconds
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <h2 id="number">0<span>%</span></h2>
+    </div>
+    <button id="pause-button">Pause Download</button>
+    <button id="cancel-button">Cancel Download</button>
+</body>
+
+</html>
