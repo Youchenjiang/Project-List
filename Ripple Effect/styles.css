@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #fff; /* Default background color */
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 255, 0.3); /* Default ripple color */
+    transform: scale(0);
+    animation: rippleEffect 1s linear;
+    width: 20px;
+    height: 20px;
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(10);
+        opacity: 0;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #000; /* Dark mode background */
+    }
+
+    .ripple {
+        background-color: rgba(0, 255, 255, 0.3); /* Dark mode ripple color */
+    }
+}
