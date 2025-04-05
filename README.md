@@ -22,10 +22,10 @@ This repository serves as a learning resource and inspiration for developers who
 
 ### Front-End Features
 
-1. [Download Effect](./Download%20Effect.html)  
+1. [Download Effect](./src/frontend/DownloadEffect/index.html)  
    A circular progress bar with pause, resume, and cancel functionality. Perfect for simulating download progress.
 
-2. [Ripple Effect](./Ripple%20Effect.html)  
+2. [Ripple Effect](./src/frontend/RippleEffect/index.html)  
    A ripple animation that generates three waves with delays. Includes support for dark mode with adaptive colors.
 
 ### Back-End Features *(Coming Soon)*
