@@ -1,0 +1,67 @@
+#container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background: conic-gradient(#333 0%, #333 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+}
+
+#container.done {
+    background: #0f0 !important; /* Green background when download is complete */
+}
+
+#container::before {
+    content: "";
+    position: absolute;
+    inset: 15px;
+    background: #222; /* Inner circle background */
+    border-radius: 50%;
+    z-index: 1;
+}
+
+#number {
+    position: relative;
+    color: #fff;
+    font-size: 3em;
+    text-align: center;
+    z-index: 2; /* Ensure text is above the progress bar */
+}
+
+#number span {
+    font-size: 0.5em; /* Smaller font size for percentage symbol */
+}
+
+#container.done #number {
+    font-size: 2.5em; /* Adjust font size when download is complete */
+}
+
+#container.done #number small {
+    display: block;
+    font-size: 0.5em;
+    margin-top: 5px;
+    color: #0f0; /* Green text for "100% Done" */
+}
+
+#cancel-button,
+#pause-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f5036c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    display: none; /* Buttons are hidden by default */
+}
+
+#cancel-button:hover,
+#pause-button:hover {
+    background-color: #c40256; /* Darker color on hover */
+}
