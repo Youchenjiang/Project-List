@@ -1,5 +1,10 @@
 # Project-List
 
+<div style="text-align: center;">
+
+[English](README.md) | [中文](README_zh.md)
+
+</div>
 A collection of small, interactive projects designed to help you learn and explore various frontend features and techniques.
 
 ## Table of Contents

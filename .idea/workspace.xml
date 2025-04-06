@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="docs: completely restructure and expand project documentation&#10;&#10;- Rewrote entire README.md to reflect new full-stack architecture&#10;- Added detailed project structure section with directory tree visualization&#10;- Created comprehensive installation guides for both frontend and backend&#10;- Expanded tech stack information to include React and Go specifics&#10;- Added development workflow instructions for full-stack environment&#10;- Reorganized content with new table of contents structure&#10;- Updated contribution guidelines to match new project standards&#10;- Maintained all original project examples while integrating into new framework">
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,7 +68,7 @@
       <option name="presentableId" value="Default" />
       <updated>1743945121182</updated>
       <workItem from="1743945126161" duration="124000" />
-      <workItem from="1743945307674" duration="2266000" />
+      <workItem from="1743945307674" duration="4867000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend">
       <option name="closed" value="true" />
@@ -86,7 +86,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743947163955</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links">
+      <option name="closed" value="true" />
+      <created>1743947880684</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743947880684</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +117,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend" />
     <MESSAGE value="docs: completely restructure and expand project documentation&#10;&#10;- Rewrote entire README.md to reflect new full-stack architecture&#10;- Added detailed project structure section with directory tree visualization&#10;- Created comprehensive installation guides for both frontend and backend&#10;- Expanded tech stack information to include React and Go specifics&#10;- Added development workflow instructions for full-stack environment&#10;- Reorganized content with new table of contents structure&#10;- Updated contribution guidelines to match new project standards&#10;- Maintained all original project examples while integrating into new framework" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: completely restructure and expand project documentation&#10;&#10;- Rewrote entire README.md to reflect new full-stack architecture&#10;- Added detailed project structure section with directory tree visualization&#10;- Created comprehensive installation guides for both frontend and backend&#10;- Expanded tech stack information to include React and Go specifics&#10;- Added development workflow instructions for full-stack environment&#10;- Reorganized content with new table of contents structure&#10;- Updated contribution guidelines to match new project standards&#10;- Maintained all original project examples while integrating into new framework" />
+    <MESSAGE value="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links" />
   </component>
 </project>
