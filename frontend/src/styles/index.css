@@ -1,0 +1,25 @@
+/* 主樣式文件，導入所有分散的樣式 */
+
+/* 導入佈局樣式 */
+@import './layout.css';
+
+/* 導入側邊欄樣式 */
+@import './sidebar.css';
+
+/* 導入內容區域樣式 */
+@import './content.css';
+
+/* 全局樣式 */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
