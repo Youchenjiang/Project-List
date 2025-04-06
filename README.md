@@ -1,70 +1,321 @@
 # Project-List
 
-A collection of small, interactive projects designed to help you learn and explore various front-end features and techniques.
+A collection of small, interactive projects designed to help you learn and explore various frontend features and techniques.
 
 ## Table of Contents
 
 - [Project-List](#project-list)
   - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
-  - [Projects](#projects)
-    - [Front-End Features](#front-end-features)
-    - [Back-End Features *(Coming Soon)*](#back-end-features-coming-soon)
-  - [How to Use](#how-to-use)
+  - [Tech Stack](#tech-stack)
+  - [Project Structure](#project-structure)
+  - [Installation and Usage](#installation-and-usage)
+    - [System Requirements](#system-requirements)
+    - [Quick Start](#quick-start)
+    - [Frontend Setup](#frontend-setup)
+    - [Backend Setup](#backend-setup)
+    - [Full-Stack Development](#full-stack-development)
+    - [Adding New Features](#adding-new-features)
+  - [Projects and Features](#projects-and-features)
+    - [Frontend Application](#frontend-application)
+    - [Backend Service](#backend-service)
+    - [Standalone Projects](#standalone-projects)
+  - [Development Guidelines](#development-guidelines)
+    - [Code Style](#code-style)
+    - [Commit Guidelines](#commit-guidelines)
   - [Contribution](#contribution)
   - [License](#license)
 
 ## Purpose
 
-This repository serves as a learning resource and inspiration for developers who want to experiment with front-end development concepts. Each project is self-contained and demonstrates a specific feature or effect.
+This repository serves as a learning resource and inspiration for developers who want to experiment with frontend development concepts. Each project is self-contained and demonstrates a specific feature or effect. The key design principle is that every small project can run independently, even when separated from the main framework.
 
-## Projects
+## Tech Stack
 
-### Front-End Features
+- Frontend Framework: React.js
+- Build Tool: Create React App
+- Styling: CSS Modules / SCSS
+- Project Management: Git
 
-1. [Download Effect](./src/frontend/DownloadEffect/index.html)  
-   A circular progress bar with pause, resume, and cancel functionality. Perfect for simulating download progress.
+## Project Structure
 
-2. [Ripple Effect](./src/frontend/RippleEffect/index.html)  
-   A ripple animation that generates three waves with delays. Includes support for dark mode with adaptive colors.
+```text
+Project-List/
+├── frontend/              # Frontend React application
+│   ├── node_modules/      # Dependencies
+│   ├── public/            # Static files and assets
+│   │   ├── assets/        # Static assets
+│   │   │   ├── images/    # Images
+│   │   │   └── icons/     # Icons
+│   │   ├── projects/      # Project examples (each can run independently)
+│   │   │   ├── Effect-Download/
+│   │   │   │   ├── index.html   # Standalone HTML file
+│   │   │   │   └── styles.css  # Project-specific styles
+│   │   │   └── Effect-Ripple/
+│   │   │       ├── index.html   # Standalone HTML file
+│   │   │       └── styles.css  # Project-specific styles
+│   │   ├── index.html     # Main HTML file
+│   │   ├── manifest.json  # PWA configuration
+│   │   └── robots.txt     # Search engine configuration
+│   ├── src/               # Source code
+│   │   ├── components/    # Reusable UI components
+│   │   │   ├── Layout.js  # Layout component
+│   │   │   ├── Sidebar.js # Sidebar component
+│   │   │   └── ContentArea.js # Content area component
+│   │   ├── context/       # React context for state management
+│   │   │   └── ProjectContext.js # Project context provider
+│   │   ├── styles/        # CSS styles organized by component
+│   │   │   ├── layout.css # Layout styles
+│   │   │   ├── sidebar.css # Sidebar styles
+│   │   │   ├── content.css # Content area styles
+│   │   │   └── index.css  # Imported styles index
+│   │   ├── data/          # Data files
+│   │   │   └── projects.js # Projects data
+│   │   ├── App.js         # Main application component
+│   │   ├── App.css        # Main styles
+│   │   ├── index.js       # Entry point
+│   │   ├── index.css      # Global styles
+│   │   └── reportWebVitals.js  # Performance monitoring
+│   ├── package.json       # Project dependencies
+│   └── package-lock.json  # Dependency lock file
+├── backend/               # Backend service
+│   ├── go.mod             # Go module dependencies
+│   └── main.go            # Main Go server file
+└── .vscode/               # VS Code settings
+```
 
-### Back-End Features *(Coming Soon)*
+## Installation and Usage
 
-Stay tuned for upcoming back-end projects!
+Follow these steps to set up and use the project:
 
-## How to Use
+### System Requirements
 
-1. Clone the repository:
+- Node.js (v16.0.0 or higher)
+- npm (v8.0.0 or higher)
+- Go (v1.21 or higher) - for backend development
+
+### Quick Start
+
+1. **Clone the Repository**
 
    ```bash
    git clone https://github.com/Youchenjiang/Project-List.git
-   ```
-
-2. Navigate to the project folder:
-
-   ```bash
    cd Project-List
    ```
 
-3. Open any `.html` file in your browser:
+2. **Install Dependencies and Start the Application**
 
-   For example, open `Download Effect.html` or `Ripple Effect.html` to see the effects in action.
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+
+3. **Explore Features**
+   - The application will be available at `http://localhost:3000`
+   - Features are organized in the navigation menu
+   - Click on the feature you want to explore
+
+4. **View Source Code**
+   - All features are implemented in React components
+   - Source code is located in the `frontend/src` directory
+   - You can view and modify the code directly
+
+5. **Run Individual Projects Independently**
+   - Each project in `frontend/public/projects/` can run independently
+   - Simply open any project's `index.html` file directly in a browser
+   - No need for the React framework or backend to run individual projects
+
+### Frontend Setup
+
+1. **Navigate to the frontend directory**
+
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Available Scripts**
+
+   - Start development server:
+
+     ```bash
+     npm start
+     ```
+
+   - Build for production:
+
+     ```bash
+     npm run build
+     ```
+
+   - Run tests:
+
+     ```bash
+     npm test
+     ```
+
+4. **Development Environment**
+
+   The frontend is built with React and uses the following key dependencies:
+   - React v19.1.0
+   - React Router v7.5.0
+   - Testing libraries for unit and integration tests
+
+### Backend Setup
+
+1. **Navigate to the backend directory**
+
+   ```bash
+   cd backend
+   ```
+
+2. **Install Go dependencies**
+
+   ```bash
+   go mod download
+   ```
+
+   Required dependencies:
+   - golang.org/x/net - Core networking functionality
+   - github.com/gorilla/mux - HTTP router and dispatcher
+
+3. **Run the backend server**
+
+   ```bash
+   go run main.go
+   ```
+
+4. **Backend API**
+
+   The backend server will start on `http://localhost:8080` by default and provides the following endpoints:
+   - `/` - Main application endpoint
+   - `/{project-name}/` - Individual project endpoints
+
+5. **Important Note About Backend**
+
+   While the backend provides a convenient way to browse all projects, **it is not required to run individual projects**. Each project in the `frontend/public/projects/` directory is designed to run independently by simply opening its HTML file in a browser.
+
+### Full-Stack Development
+
+1. **Start both servers**
+
+   You'll need to run both the frontend and backend servers for full functionality:
+
+   Terminal 1:
+
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+   Terminal 2:
+
+   ```bash
+   cd backend
+   go run main.go
+   ```
+
+2. **Development Workflow**
+
+   - Frontend changes will automatically reload in the browser
+   - Backend changes require server restart
+   - Use Git for version control following the commit guidelines
+
+### Adding New Features
+
+1. **Creating a new effect or component**
+
+   - Create a new directory in `frontend/public/projects/` for static assets
+   - Create a new component in `frontend/src/components/`
+   - Add corresponding styles in `frontend/src/styles/` directory
+     - Follow the naming convention: `componentName.css`
+     - Import your styles in `styles/index.css` if needed
+   - If needed, update the context in `frontend/src/context/ProjectContext.js`
+     - Use the `useProject` hook to access project data in your components
+   - Update the main App.js to include your new component or update the Layout component
+
+2. **Testing your changes**
+
+   - Write tests for your components in the same directory with a `.test.js` suffix
+   - Run tests with `npm test`
+   - Ensure all existing tests pass before submitting changes
+
+3. **Documentation**
+
+   - Update this README.md with information about your new feature
+   - Include code comments explaining complex logic
+   - Consider adding a demo or screenshot if applicable
+
+## Projects and Features
+
+This repository contains the following projects and features:
+
+### Frontend Application
+
+A React-based application that demonstrates modern frontend development practices with these features:
+
+- Interactive user interface
+- Modern React development workflow
+- Clean code organization
+- Performance optimization
+
+### Backend Service
+
+A Go-based backend service that complements the frontend application with these features:
+
+- RESTful API endpoints
+- Efficient data processing
+- Secure authentication
+- Scalable architecture
+
+### Standalone Projects
+
+Each project in the `frontend/public/projects/` directory is designed to be completely standalone:
+
+- **Independent HTML/CSS/JS**: Each project contains all necessary files to run independently
+- **No External Dependencies**: Projects don't rely on the React framework or backend
+- **Direct Execution**: Simply open any project's `index.html` file in a browser to see it in action
+- **Self-Contained Code**: All code needed for the effect or feature is contained within the project folder
+- **Easy to Extract**: Projects can be copied to any location and will still function correctly
+
+## Development Guidelines
+
+### Code Style
+
+1. Use functional components with hooks
+2. Follow React best practices
+3. Use CSS Modules for styling
+4. Implement proper error handling
+5. Write clean and maintainable code
+
+### Commit Guidelines
+
+1. Use conventional commits format
+2. Keep commit messages clear and concise
+3. Group related changes together
+4. Test changes before committing
 
 ## Contribution
 
-Contributions are welcome! To contribute:
+We welcome contributions! To contribute:
 
-1. Fork this repository.
+1. Fork this repository
 2. Create a new branch:
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-3. Commit your changes:
+3. Make your changes and commit:
 
    ```bash
-   git commit -m "Add your descriptive commit message"
+   git commit -m "feat: your descriptive commit message"
    ```
 
 4. Push to your branch:
@@ -73,7 +324,7 @@ Contributions are welcome! To contribute:
    git push origin feature/your-feature-name
    ```
 
-5. Open a pull request.
+5. Open a pull request
 
 ## License
 

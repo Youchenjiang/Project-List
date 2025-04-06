@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="">
+    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/Effect-Download/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/Effect-Download/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/Effect-Ripple/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/Effect-Ripple/styles.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +16,25 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Youchenjiang"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Youchenjiang/Project-List.git",
+    "accountId": "947d348a-6f0c-49e5-afb4-fc438039aaec"
+  }
+}]]></component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -34,7 +49,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -52,8 +67,17 @@
       <option name="presentableId" value="Default" />
       <updated>1743945121182</updated>
       <workItem from="1743945126161" duration="124000" />
-      <workItem from="1743945307674" duration="774000" />
+      <workItem from="1743945307674" duration="1657000" />
     </task>
+    <task id="LOCAL-00001" summary="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend">
+      <option name="closed" value="true" />
+      <created>1743946266088</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743946266088</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -61,7 +85,20 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend" />
   </component>
 </project>
