@@ -1,0 +1,1 @@
+export const BASE_URL = "https://github.com/Youchenjiang/Project-List/tree/master/frontend/public/projects";
