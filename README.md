@@ -25,6 +25,7 @@ A collection of small, interactive projects designed to help you learn and explo
     - [Commit Guidelines](#commit-guidelines)
   - [Contribution](#contribution)
   - [License](#license)
+  - [Acknowledgements](#acknowledgements)
 
 ## Purpose
 
@@ -329,3 +330,12 @@ We welcome contributions! To contribute:
 ## License
 
 This repository is licensed under the MIT License. Feel free to use and modify the code as you like.
+
+## Acknowledgements
+
+I would like to thank the following tools and platforms for their contributions to this project:
+
+- **[Trae AI](https://trae.ai) & [Windsurf](https://windsurf.com/)**: For providing intelligent coding assistance and development support
+- **[VS Code](https://code.visualstudio.com)**: For offering a powerful and flexible development environment
+- **[GitHub Copilot](https://github.com/features/copilot)**: For enhancing productivity with AI-powered code suggestions
+- **[Rider](https://www.jetbrains.com/rider/)**: For providing excellent IDE features and debugging capabilities
