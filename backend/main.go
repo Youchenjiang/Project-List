@@ -38,7 +38,7 @@ func main() {
 		})
 
 		// 靜態資源路由處理
-		mux.Handle("/"+proj.Name+"/static/", http.StripPrefix("/"+proj.Name+"/static/", http.FileServer(http.Dir("frontend/"+proj.Name))))
+		mux.Handle("/"+proj.Name+"/static/", http.StripPrefix("/"+proj.Name+"/static/", http.FileServer(http.Dir("frontend/public/projects/"+proj.Name))))
 	}
 
 	// 啟動服務器
