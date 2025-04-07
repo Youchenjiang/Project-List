@@ -24,8 +24,7 @@ const ContentArea = () => {
                         border: 'none'
                     }}
                     sandbox="allow-same-origin allow-scripts"
-                />
-            ) : (
+            /> ) : (
                 <div className="welcome-page">
                     <h1>專案管理系統</h1>
                     <p>點擊側邊欄的專案來查看不同的效果示範</p>
