@@ -1,0 +1,78 @@
+<svg width="300" height="400" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- 熊熊的身體 -->
+  <g id="teddy-body">
+    <!-- 身體主體 -->
+    <ellipse cx="150" cy="250" rx="65" ry="80" fill="#b5651d" stroke="#8b4513" stroke-width="2" />
+    
+    <!-- 手臂 -->
+    <path d="M90 220 Q75 250 80 280" stroke="#8b4513" stroke-width="2" fill="#b5651d" />
+    <path d="M210 220 Q225 250 220 280" stroke="#8b4513" stroke-width="2" fill="#b5651d" />
+    
+    <!-- 腿部 -->
+    <path d="M125 325 Q120 355 115 385" stroke="#8b4513" stroke-width="2" fill="#b5651d" />
+    <path d="M175 325 Q180 355 185 385" stroke="#8b4513" stroke-width="2" fill="#b5651d" />
+  </g>
+  
+  <!-- 熊熊的頭部 -->
+  <g id="teddy-head">
+    <!-- 頭部主體 -->
+    <circle cx="150" cy="150" r="70" fill="#b5651d" stroke="#8b4513" stroke-width="2" />
+    
+    <!-- 耳朵 -->
+    <circle cx="95" cy="95" r="25" fill="#b5651d" stroke="#8b4513" stroke-width="2" />
+    <circle cx="205" cy="95" r="25" fill="#b5651d" stroke="#8b4513" stroke-width="2" />
+    
+    <!-- 耳朵內部 -->
+    <circle cx="95" cy="95" r="15" fill="#d78d51" />
+    <circle cx="205" cy="95" r="15" fill="#d78d51" />
+  </g>
+  
+  <!-- 熊熊的臉 -->
+  <g id="teddy-face">
+    <!-- 眼睛 -->
+    <g id="eyes">
+      <circle cx="125" cy="140" r="10" fill="#333" />
+      <circle cx="175" cy="140" r="10" fill="#333" />
+      <circle cx="128" cy="137" r="3" fill="white" />
+      <circle cx="178" cy="137" r="3" fill="white" />
+    </g>
+    
+    <!-- 鼻子 -->
+    <ellipse cx="150" cy="165" rx="15" ry="10" fill="#333" />
+    
+    <!-- 嘴巴 (開心) -->
+    <g id="mouth-happy" class="mouth">
+      <path d="M130 185 Q150 200 170 185" stroke="#333" stroke-width="3" fill="none" />
+    </g>
+    
+    <!-- 嘴巴 (難過) -->
+    <g id="mouth-sad" class="mouth" style="display:none">
+      <path d="M130 195 Q150 180 170 195" stroke="#333" stroke-width="3" fill="none" />
+    </g>
+    
+    <!-- 嘴巴 (興奮) -->
+    <g id="mouth-excited" class="mouth" style="display:none">
+      <circle cx="150" cy="185" r="15" fill="#ff6b6b" />
+    </g>
+  </g>
+  
+  <!-- 毛絨質感 (用小圓點和線條表示) -->
+  <g id="fur-texture" opacity="0.3">
+    <circle cx="100" cy="150" r="4" fill="#8b4513" />
+    <circle cx="110" cy="170" r="3" fill="#8b4513" />
+    <circle cx="190" cy="150" r="4" fill="#8b4513" />
+    <circle cx="180" cy="170" r="3" fill="#8b4513" />
+    <circle cx="150" cy="100" r="3" fill="#8b4513" />
+    <circle cx="130" cy="110" r="4" fill="#8b4513" />
+    <circle cx="170" cy="110" r="4" fill="#8b4513" />
+    <circle cx="120" cy="200" r="3" fill="#8b4513" />
+    <circle cx="180" cy="200" r="3" fill="#8b4513" />
+    <circle cx="150" cy="220" r="4" fill="#8b4513" />
+    
+    <!-- 一些毛髮線條 -->
+    <line x1="85" y1="140" x2="80" y2="145" stroke="#8b4513" stroke-width="1" />
+    <line x1="90" y1="130" x2="85" y2="125" stroke="#8b4513" stroke-width="1" />
+    <line x1="215" y1="140" x2="220" y2="145" stroke="#8b4513" stroke-width="1" />
+    <line x1="210" y1="130" x2="215" y2="125" stroke="#8b4513" stroke-width="1" />
+  </g>
+</svg>
