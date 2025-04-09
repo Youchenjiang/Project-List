@@ -10,7 +10,7 @@ const TeddyBelleInteraction = () => {
     const [message, setMessage] = useState('');
     const [conversation, setConversation] = useState([]);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [mood, setMood] = useState('happy'); // 'happy', 'sad', 'excited'
+    const [, setMood] = useState('happy'); // 'happy', 'sad', 'excited'
     
     // 圖片基礎路徑
     const imgBasePath = window.location.hostname === 'localhost' 
