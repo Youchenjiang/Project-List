@@ -1,0 +1,505 @@
+/* 熊熊和貝兒互動頁面樣式 */
+
+.teddy-belle-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  background-color: #f8f4e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 角色選擇區域 */
+.character-selection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.character-btn {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+.character-btn.active {
+  background-color: #ffb6c1;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 互動區域 */
+.interaction-area {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* 角色顯示區域 */
+.character-display {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-display.animating {
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+/* 熊熊角色樣式 */
+.teddy-character {
+  width: 200px;
+  height: 300px;
+  position: relative;
+}
+
+.teddy-head {
+  width: 120px;
+  height: 120px;
+  background-color: #b5651d;
+  border-radius: 60px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.teddy-ear {
+  width: 40px;
+  height: 40px;
+  background-color: #b5651d;
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+}
+
+.teddy-ear.left {
+  left: 10px;
+}
+
+.teddy-ear.right {
+  right: 10px;
+}
+
+.teddy-face {
+  position: relative;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.teddy-eye {
+  width: 15px;
+  height: 15px;
+  background-color: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+}
+
+.teddy-eye.left {
+  left: 30px;
+}
+
+.teddy-eye.right {
+  right: 30px;
+}
+
+.teddy-nose {
+  width: 20px;
+  height: 15px;
+  background-color: #000;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.teddy-mouth {
+  width: 40px;
+  height: 20px;
+  border-bottom: 3px solid #000;
+  border-radius: 0 0 20px 20px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.teddy-mouth.happy {
+  border-bottom: 3px solid #000;
+  border-radius: 0 0 20px 20px;
+}
+
+.teddy-mouth.sad {
+  border-top: 3px solid #000;
+  border-radius: 20px 20px 0 0;
+  margin-top: 20px;
+}
+
+.teddy-mouth.excited {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: #ff6b6b;
+  border-radius: 15px;
+}
+
+.teddy-body {
+  width: 140px;
+  height: 160px;
+  background-color: #b5651d;
+  border-radius: 70px;
+  margin: 10px auto 0;
+  position: relative;
+}
+
+.teddy-arm {
+  width: 30px;
+  height: 80px;
+  background-color: #b5651d;
+  border-radius: 15px;
+  position: absolute;
+  top: 20px;
+}
+
+.teddy-arm.left {
+  left: -10px;
+  transform: rotate(20deg);
+}
+
+.teddy-arm.right {
+  right: -10px;
+  transform: rotate(-20deg);
+}
+
+.teddy-leg {
+  width: 35px;
+  height: 60px;
+  background-color: #b5651d;
+  border-radius: 17px;
+  position: absolute;
+  bottom: -30px;
+}
+
+.teddy-leg.left {
+  left: 25px;
+}
+
+.teddy-leg.right {
+  right: 25px;
+}
+
+/* 貝兒角色樣式 - 使用SVG */
+.belle-character {
+  width: 200px;
+  height: 300px;
+  position: relative;
+  background-image: url('C:\\Users\\g1014\\Documents\\GitHub\\Project-List\\frontend\\public\\assets\\images\\belle.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.belle-eye {
+  width: 18px;
+  height: 18px;
+  background-color: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  border: 2px solid #333;
+}
+
+.belle-eye.left {
+  left: 25px;
+}
+
+.belle-eye.right {
+  right: 25px;
+}
+
+.belle-nose {
+  width: 15px;
+  height: 12px;
+  background-color: #ffb6c1;
+  border-radius: 50%;
+  margin-top: 10px;
+  border: 1px solid #333;
+}
+
+.belle-mouth {
+  width: 30px;
+  height: 15px;
+  border-bottom: 3px solid #333;
+  border-radius: 0 0 15px 15px;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+}
+
+.belle-mouth.happy {
+  width: 30px;
+  height: 15px;
+  border-bottom: 3px solid #333;
+  border-radius: 0 0 15px 15px;
+  position: relative;
+}
+
+.belle-mouth.happy:before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 8px;
+  background-color: #ffccd0;
+  border-radius: 0 0 10px 10px;
+  bottom: -2px;
+  left: 5px;
+}
+
+.belle-mouth.sad {
+  border-top: 3px solid #333;
+  border-radius: 15px 15px 0 0;
+  margin-top: 15px;
+}
+
+.belle-mouth.excited {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #ff6b6b;
+  border-radius: 12px;
+}
+
+.belle-body {
+  width: 120px;
+  height: 150px;
+  position: relative;
+  margin: 10px auto 0;
+  background-color: #ffe4e8; /* 更淺的粉色身體 */
+  border-radius: 60px 60px 40px 40px;
+}
+
+.belle-arm {
+  width: 30px;
+  height: 70px;
+  background-color: #ffe4e8; /* 更淺的粉色手臂 */
+  border-radius: 15px;
+  position: absolute;
+  top: 10px;
+}
+
+.belle-arm.left {
+  left: -10px;
+  transform: rotate(15deg);
+}
+
+.belle-arm.right {
+  right: -10px;
+  transform: rotate(-15deg);
+}
+
+.belle-dress {
+  display: none; /* 隱藏裙子 */
+}
+
+/* 添加貝兒的腿部 */
+.belle-leg {
+  width: 30px;
+  height: 50px;
+  background-color: #ffe4e8; /* 更淺的粉色腿部 */
+  border-radius: 15px;
+  position: absolute;
+  bottom: -30px;
+}
+
+.belle-leg.left {
+  left: 25px;
+}
+
+.belle-leg.right {
+  right: 25px;
+}
+
+/* 對話區域 */
+.conversation-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.teddy, .message.belle {
+  justify-content: flex-start;
+}
+
+.message-avatar {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.message.user .message-avatar {
+  order: 2;
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+  max-width: 70%;
+  word-break: break-word;
+}
+
+.message.user .message-bubble {
+  background-color: #dcf8c6;
+}
+
+.message.teddy .message-bubble {
+  background-color: #f5d8a8;
+}
+
+.message.belle .message-bubble {
+  background-color: #ffe4e8; /* 更淺的粉色氣泡 */
+  color: #333;
+}
+
+/* 聊天頭像圖示樣式 */
+.message-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    width: 28px;
+    height: 28px;
+}
+
+.avatar-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.system-message {
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.message-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.message-input button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #ff6b6b; /* 改為紅色 */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:hover {
+  background-color: #ffb6c1; /* hover 時變為粉紅色 */
+}
+
+/* 動作按鈕 */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-buttons button {
+  padding: 12px 25px;
+  background-color: #b5651d;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .interaction-area {
+    flex-direction: column;
+  }
+  
+  .character-display, .conversation-area {
+    width: 100%;
+  }
+  
+  .teddy-character, .belle-character {
+    transform: scale(0.8);
+  }
+}

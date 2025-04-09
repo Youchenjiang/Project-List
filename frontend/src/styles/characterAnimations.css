@@ -1,0 +1,64 @@
+/* 角色動畫效果 */
+
+/* 揮手動畫 */
+.wave-animation {
+  animation: wave 1.5s ease-in-out;
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 點頭動畫 */
+.nod-animation {
+  animation: nod 1.5s ease-in-out;
+}
+
+@keyframes nod {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(10px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+
+/* 擁抱動畫 */
+.hug-animation {
+  animation: hug 1.5s ease-in-out;
+}
+
+@keyframes hug {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* 玩耍動畫 */
+.play-animation {
+  animation: play 1.5s ease-in-out;
+}
+
+@keyframes play {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 餵食動畫 */
+.feed-animation {
+  animation: feed 1.5s ease-in-out;
+}
+
+@keyframes feed {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}

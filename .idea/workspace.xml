@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links">
+    <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ContentArea.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ContentArea.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/data/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/data/projects.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,20 +22,21 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Youchenjiang"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Youchenjiang&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Youchenjiang/Project-List.git",
-    "accountId": "947d348a-6f0c-49e5-afb4-fc438039aaec"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Youchenjiang/Project-List.git&quot;,
+    &quot;accountId&quot;: &quot;947d348a-6f0c-49e5-afb4-fc438039aaec&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/g1014/Documents/GitHub/Project-List/.vscode/settings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/g1014/Documents/GitHub/Project-List/frontend/package-lock.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/package-lock.json" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -46,19 +48,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -69,6 +71,8 @@
       <updated>1743945121182</updated>
       <workItem from="1743945126161" duration="124000" />
       <workItem from="1743945307674" duration="4867000" />
+      <workItem from="1744046485964" duration="540000" />
+      <workItem from="1744212561821" duration="71000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend">
       <option name="closed" value="true" />
@@ -94,7 +98,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743947880684</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: Add GitHub Pages deployment configuration&#10;- Added `homepage` field in `package.json` pointing to `https://youchenjiang.github.io/Project-List/`&#10;- Added `gh-pages` dependency for deploying the site to GitHub Pages&#10;- Added `predeploy` and `deploy` npm scripts for automated deployment process&#10;- Updated `config.js` to handle deployment environment:&#10;  - Added `BASE_URL` variable for different paths in development and production&#10;  - Added `PUBLIC_PATH` and `GITHUB_PAGES_BASE` variables for base path handling&#10;  - Implemented `getProjectPath()` function to resolve project paths correctly in both local and GitHub Pages environments&#10;- Updated `projects.js` to use `getProjectPath()` function for dynamic path generation&#10;- Minor update to `ContentArea` component to fix iframe closing tag format&#10;- Added lock files (`package-lock.json`)">
+      <option name="closed" value="true" />
+      <created>1744046824095</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744046824095</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +130,7 @@
     <MESSAGE value="feat: implement full-stack foundation with React frontend and Go backend&#10;&#10;- Created React frontend framework using Create React App as foundation&#10;- Integrated existing standalone projects (Ripple Effect and Download Effect) into new structure&#10;  - Moved projects to `frontend/public/projects/` with proper folder structure&#10;  - Each project maintains standalone functionality while being framework-compatible&#10;- Implemented core frontend architecture:&#10;  - Added homepage layout in `frontend/src/App.js`&#10;  - Created reusable Sidebar component in `frontend/src/components/Sidebar.js`&#10;  - Established project context in `frontend/src/context/ProjectContext.js`&#10;- Set up Go backend service with basic REST API endpoints:&#10;  - Initialized Go module in `backend/go.mod`&#10;  - Created main server file in `backend/main.go`&#10;- Configured development environment for both frontend and backend" />
     <MESSAGE value="docs: completely restructure and expand project documentation&#10;&#10;- Rewrote entire README.md to reflect new full-stack architecture&#10;- Added detailed project structure section with directory tree visualization&#10;- Created comprehensive installation guides for both frontend and backend&#10;- Expanded tech stack information to include React and Go specifics&#10;- Added development workflow instructions for full-stack environment&#10;- Reorganized content with new table of contents structure&#10;- Updated contribution guidelines to match new project standards&#10;- Maintained all original project examples while integrating into new framework" />
     <MESSAGE value="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links" />
+    <MESSAGE value="feat: Add GitHub Pages deployment configuration&#10;- Added `homepage` field in `package.json` pointing to `https://youchenjiang.github.io/Project-List/`&#10;- Added `gh-pages` dependency for deploying the site to GitHub Pages&#10;- Added `predeploy` and `deploy` npm scripts for automated deployment process&#10;- Updated `config.js` to handle deployment environment:&#10;  - Added `BASE_URL` variable for different paths in development and production&#10;  - Added `PUBLIC_PATH` and `GITHUB_PAGES_BASE` variables for base path handling&#10;  - Implemented `getProjectPath()` function to resolve project paths correctly in both local and GitHub Pages environments&#10;- Updated `projects.js` to use `getProjectPath()` function for dynamic path generation&#10;- Minor update to `ContentArea` component to fix iframe closing tag format&#10;- Added lock files (`package-lock.json`)" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add GitHub Pages deployment configuration&#10;- Added `homepage` field in `package.json` pointing to `https://youchenjiang.github.io/Project-List/`&#10;- Added `gh-pages` dependency for deploying the site to GitHub Pages&#10;- Added `predeploy` and `deploy` npm scripts for automated deployment process&#10;- Updated `config.js` to handle deployment environment:&#10;  - Added `BASE_URL` variable for different paths in development and production&#10;  - Added `PUBLIC_PATH` and `GITHUB_PAGES_BASE` variables for base path handling&#10;  - Implemented `getProjectPath()` function to resolve project paths correctly in both local and GitHub Pages environments&#10;- Updated `projects.js` to use `getProjectPath()` function for dynamic path generation&#10;- Minor update to `ContentArea` component to fix iframe closing tag format&#10;- Added lock files (`package-lock.json`)" />
   </component>
 </project>

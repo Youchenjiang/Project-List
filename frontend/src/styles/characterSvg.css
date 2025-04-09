@@ -1,0 +1,30 @@
+.mood-happy #mouth-sad, .mood-happy #mouth-excited { display: none !important; }
+.mood-happy #mouth-happy { display: block !important; }
+
+.mood-sad #mouth-happy, .mood-sad #mouth-excited { display: none !important; }
+.mood-sad #mouth-sad { display: block !important; }
+
+.mood-excited #mouth-happy, .mood-excited #mouth-sad { display: none !important; }
+.mood-excited #mouth-excited { display: block !important; }
+
+.character-svg {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.animating .character-svg {
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+.teddy-character, .belle-character {
+  width: 200px;
+  height: 300px;
+  position: relative;
+  margin: 0 auto;
+}

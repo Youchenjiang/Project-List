@@ -16,5 +16,13 @@ export const projects = [
         icon: "💧",
         description: "A ripple animation that generates three waves with delays.",
         reference: `${BASE_URL}/Effect-Ripple/index.html`
+    },
+    {
+        id: 3,
+        name: "熊熊與貝兒",
+        path: "teddy-belle",
+        icon: "🧸",
+        description: "與可愛的玩偶熊熊和貝兒互動的有趣頁面。",
+        isReactComponent: true
     }
 ];
