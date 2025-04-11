@@ -1,5 +1,7 @@
 # 專案列表
 
+<!-- markdownlint-disable MD013 MD033 -->
+
 <div style="text-align: center;">
 
 [English](README.md) | [中文](README_zh.md)
@@ -67,13 +69,17 @@ Project-List/
 │   │   ├── components/    # 可複用UI元件
 │   │   │   ├── Layout.js  # 佈局元件
 │   │   │   ├── Sidebar.js # 側邊欄元件
-│   │   │   └── ContentArea.js # 內容區域元件
+│   │   │   ├── ContentArea.js # 內容區域元件
+│   │   │   └── TeddyBelleInteraction.js # 熊熊和貝兒互動元件
 │   │   ├── context/       # React狀態管理上下文
 │   │   │   └── ProjectContext.js # 專案上下文提供者
 │   │   ├── styles/        # 按元件組織的CSS樣式
 │   │   │   ├── layout.css # 佈局樣式
 │   │   │   ├── sidebar.css # 側邊欄樣式
 │   │   │   ├── content.css # 內容區域樣式
+│   │   │   ├── characterAnimations.css # 角色動畫樣式
+│   │   │   ├── characterSvg.css # 角色SVG樣式
+│   │   │   ├── teddyBelle.css # 熊熊和貝兒互動樣式
 │   │   │   └── index.css  # 匯入的樣式索引
 │   │   ├── data/          # 資料檔案
 │   │   │   └── projects.js # 專案資料
@@ -158,6 +164,12 @@ Project-List/
 
      ```bash
      npm run build
+     ```
+
+   - 部署至 GitHub Pages:
+
+     ```bash
+     npm run deploy
      ```
 
    - 執行測試:
@@ -341,6 +353,9 @@ Project-List/
 我要感謝以下工具和平台對本專案的貢獻:
 
 - **[Trae AI](https://trae.ai) & [Windsurf](https://windsurf.com/)**: 提供智慧編碼輔助和開發支援
-- **[VS Code](https://code.visualstudio.com)**: 提供強大靈活的開發環境
+- **[VS Code Insiders](https://code.visualstudio.com/insiders/)**: 提供出色的 GitHub Copilot 整合與方便快速編輯的功能
 - **[GitHub Copilot](https://github.com/features/copilot)**: 透過AI驅動的程式碼建議提高生產力
-- **[Rider](https://www.jetbrains.com/rider/)**: 提供出色的IDE功能和除錯能力
+- **[Rider](https://www.jetbrains.com/rider/)**: 便於高效率的 GitHub 分支提交和版本控制
+- **[FreeConvert](https://www.freeconvert.com/jpg-to-svg)**: 提供 JPG 轉 SVG 的轉換服務
+- **[Medium - GitHub Pages 教學](https://lawrencechuang760223.medium.com/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-github-pages-%E4%BE%86%E6%9E%B6%E8%A8%AD%E7%B6%B2%E9%A0%81-662a089f4e4)**: 提供關於使用 GitHub Pages 架設網站的實用教學
+- **[GitHub Pages React 教學](https://rexhung0302.github.io/2021/09/28/20210928/)**: 提供關於將 React 應用部署到 GitHub Pages 的完整指南

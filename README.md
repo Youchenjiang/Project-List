@@ -1,5 +1,7 @@
 # Project-List
 
+<!-- markdownlint-disable MD013 MD033 -->
+
 <div style="text-align: center;">
 
 [English](README.md) | [中文](README_zh.md)
@@ -67,13 +69,17 @@ Project-List/
 │   │   ├── components/    # Reusable UI components
 │   │   │   ├── Layout.js  # Layout component
 │   │   │   ├── Sidebar.js # Sidebar component
-│   │   │   └── ContentArea.js # Content area component
+│   │   │   ├── ContentArea.js # Content area component
+│   │   │   └── TeddyBelleInteraction.js # Teddy Bear and Belle interaction component
 │   │   ├── context/       # React context for state management
 │   │   │   └── ProjectContext.js # Project context provider
 │   │   ├── styles/        # CSS styles organized by component
 │   │   │   ├── layout.css # Layout styles
 │   │   │   ├── sidebar.css # Sidebar styles
 │   │   │   ├── content.css # Content area styles
+│   │   │   ├── characterAnimations.css # Character animation styles
+│   │   │   ├── characterSvg.css # Character SVG styles
+│   │   │   ├── teddyBelle.css # Teddy and Belle interaction styles
 │   │   │   └── index.css  # Imported styles index
 │   │   ├── data/          # Data files
 │   │   │   └── projects.js # Projects data
@@ -158,6 +164,12 @@ Follow these steps to set up and use the project:
 
      ```bash
      npm run build
+     ```
+
+   - Deploy to GitHub Pages:
+
+     ```bash
+     npm run deploy
      ```
 
    - Run tests:
@@ -341,6 +353,9 @@ This repository is licensed under the MIT License. Feel free to use and modify t
 I would like to thank the following tools and platforms for their contributions to this project:
 
 - **[Trae AI](https://trae.ai) & [Windsurf](https://windsurf.com/)**: For providing intelligent coding assistance and development support
-- **[VS Code](https://code.visualstudio.com)**: For offering a powerful and flexible development environment
+- **[VS Code Insiders](https://code.visualstudio.com/insiders/)**: For its excellent GitHub Copilot integration and convenient rapid editing capabilities
 - **[GitHub Copilot](https://github.com/features/copilot)**: For enhancing productivity with AI-powered code suggestions
-- **[Rider](https://www.jetbrains.com/rider/)**: For providing excellent IDE features and debugging capabilities
+- **[Rider](https://www.jetbrains.com/rider/)**: For facilitating efficient GitHub branch submissions and version control
+- **[FreeConvert](https://www.freeconvert.com/jpg-to-svg)**: For providing JPG to SVG conversion services
+- **[Medium - GitHub Pages Tutorial](https://lawrencechuang760223.medium.com/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-github-pages-%E4%BE%86%E6%9E%B6%E8%A8%AD%E7%B6%B2%E9%A0%81-662a089f4e4)**: For the helpful tutorial on setting up websites with GitHub Pages
+- **[GitHub Pages React Tutorial](https://rexhung0302.github.io/2021/09/28/20210928/)**: For the comprehensive guide on deploying React applications to GitHub Pages
