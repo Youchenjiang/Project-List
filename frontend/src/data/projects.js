@@ -24,5 +24,13 @@ export const projects = [
         icon: "🧸",
         description: "與可愛的玩偶熊熊和貝兒互動的有趣頁面。",
         isReactComponent: true
+    },
+    {
+        id: 4,
+        name: "Visual Map",
+        path: getProjectPath("projects/Visual Map/try.html"),
+        icon: "🗺️",
+        description: "互動式資料視覺化地圖展示。",
+        reference: `${BASE_URL}/Visual Map/try.html`
     }
 ];
