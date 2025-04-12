@@ -6,10 +6,14 @@ const Sidebar = () => {
     const { projects, setSelectedProject } = useProject();
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    
-    // 處理過渡效果
+      // 處理過渡效果
     useEffect(() => {
         if (isSidebarExpanded) {
+            setIsTransitioning(true);
+            const timer = setTimeout(() => setIsTransitioning(false), 350); // 增加一點時間，確保過渡效果完成
+            return () => clearTimeout(timer);
+        } else {
+            // 收縮時也設置過渡狀態，延遲移除，確保文字有足夠的時間淡出
             setIsTransitioning(true);
             const timer = setTimeout(() => setIsTransitioning(false), 300);
             return () => clearTimeout(timer);
@@ -35,9 +39,8 @@ const Sidebar = () => {
                             color: 'inherit',
                             width: '100%'
                         }}
-                    >
-                        <div className="project-icon">🏠</div>
-                        {isSidebarExpanded && (
+                    >                        <div className="project-icon">🏠</div>
+                        {(isSidebarExpanded || isTransitioning) && (
                             <div className="project-text">
                                 <h3>回首頁</h3>
                                 <p>返回歡迎頁面</p>

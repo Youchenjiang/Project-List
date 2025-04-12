@@ -22,6 +22,24 @@
   overflow-x: hidden;
 }
 
+/* 新增 - 文字元素的過渡效果 */
+.project-text {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+  width: 0; /* 收縮時寬度為0 */
+  overflow: hidden;
+}
+
+.sidebar.expanded .project-text,
+.sidebar.transitioning .project-text {
+  opacity: 1;
+  transform: translateX(0);
+  width: calc(100% - 60px); /* 展開時佔據剩餘空間 */
+  margin-left: 5px; /* 添加一些左邊距 */
+}
+
 /* 使用JS控制展開，不再使用hover */
 /* .sidebar:hover {
   width: 250px;
@@ -45,10 +63,13 @@
   background: rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
   width: 100%;
+  height: 60px; /* 設定固定高度 */
+  min-height: 60px; /* 確保最小高度也一致 */
   overflow: hidden;
   position: relative;
   cursor: pointer;
   border-left: 3px solid transparent;
+  box-sizing: border-box; /* 確保padding不會影響整體高度 */
 }
 
 .project-item:hover {
@@ -81,32 +102,7 @@
   color: #61dafb;
   transition: all 0.3s ease;
   position: relative;
-  left: 0;
-  transform: translateX(0);
-}
-
-.project-text {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  max-height: 0;
-}
-
-.sidebar.expanded .project-text,
-.sidebar.transitioning .project-text {
-  opacity: 1;
-  max-height: 100px;
-  animation: fadeIn 0.3s ease forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  margin: 0 auto; /* 收縮時保持居中 */
 }
 
 .sidebar.expanded .project-item {
@@ -114,11 +110,11 @@
   padding: 8px 12px;
 }
 
-.sidebar.expanded .project-icon,
-.sidebar.transitioning .project-icon {
-  margin-right: 15px;
-  justify-content: center;
+.sidebar.expanded .project-icon {
+  margin: 0 15px 0 0; /* 展開時左右margin改變，不再是auto */
 }
+
+/* 移除transitioning時的特殊樣式，讓過渡更平滑 */
 
 .project-text h3 {
   margin: 0;
