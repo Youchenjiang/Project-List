@@ -1,0 +1,9 @@
+程式碼：
+https://www.bilibili.com/video/BV1N34y1w7fA/?vd_source=b8d0b3132fd1a83c2e7501bd16a674d1
+GeoJson：
+https://www.oxxostudio.tw/articles/201803/google-maps-15-geojson-taiwan.html
+地圖1：
+https://github.com/g0v/twgeojson/blob/master/json/twCounty2010merge.topo.json?short_path=596ad18
+https://jeffpaine.github.io/geojson-topojson/
+地圖2：
+https://sheethub.com/ronnywang/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E7%B8%A3%E5%B8%82
