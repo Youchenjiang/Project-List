@@ -127,13 +127,12 @@ async function initVisualMap() {
         users: myChart2
     };
     
-    try {
-        // 載入地理數據
+    try {        // 載入地理數據
         const [map, map2, users, users2] = await Promise.all([
-            fetch('./roc1.json').then(resp => resp.json()),
-            fetch('./roc2.json').then(resp => resp.json()),
-            fetch('./users1.json').then(resp => resp.json()),
-            fetch('./users2.json').then(resp => resp.json())
+            fetch('./taiwan-geo-data1.json').then(resp => resp.json()),
+            fetch('./taiwan-geo-data2.json').then(resp => resp.json()),
+            fetch('./population-data.json').then(resp => resp.json()),
+            fetch('./user-distribution.json').then(resp => resp.json())
         ]);
         
         // 儲存數據以便重用
