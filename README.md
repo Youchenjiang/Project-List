@@ -59,9 +59,19 @@ Project-List/
 │   │   │   ├── Effect-Download/
 │   │   │   │   ├── index.html   # Standalone HTML file
 │   │   │   │   └── styles.css  # Project-specific styles
-│   │   │   └── Effect-Ripple/
+│   │   │   ├── Effect-Ripple/
+│   │   │   │   ├── index.html   # Standalone HTML file
+│   │   │   │   └── styles.css  # Project-specific styles
+│   │   │   └── Visual Map/
 │   │   │       ├── index.html   # Standalone HTML file
-│   │   │       └── styles.css  # Project-specific styles
+│   │   │       ├── taiwan-map.js # Main map visualization code
+│   │   │       ├── styles.css  # Project-specific styles
+│   │   │       ├── taiwan-geo-data1.json # Taiwan map geographic data 1
+│   │   │       ├── taiwan-geo-data2.json # Taiwan map geographic data 2
+│   │   │       ├── population-data.json # Population distribution data
+│   │   │       ├── user-distribution.json # User distribution data
+│   │   │       ├── echarts.min.js # ECharts library
+│   │   │       └── data-sources.txt # Data sources documentation
 │   │   ├── index.html     # Main HTML file
 │   │   ├── manifest.json  # PWA configuration
 │   │   └── robots.txt     # Search engine configuration
