@@ -40,40 +40,157 @@
 })();
 
 // 全局變量，存儲地圖實例和數據以便重用
+// 定義模組配置和狀態管理
 const mapModule = {
-    charts: {},
-    data: {},
-    mapRegistered: false,
-    selectedRegion: null, // 追蹤當前選中的區域
-    mapLinkageEnabled: true // 控制地圖聯動功能
+    charts: {},            // 存儲地圖實例
+    data: {},              // 存儲地圖數據
+    mapRegistered: false,  // 地圖是否已註冊
+    selectedRegion: null,  // 追蹤當前選中的區域
+    mapLinkageEnabled: true, // 控制地圖聯動功能
+    config: {
+        animation: true,     // 控制動畫效果
+        duration: 300,      // 過渡動畫時長
+        theme: 'default'    // 地圖主題
+    }
 };
 
 // 確保DOM加載完成後再執行初始化
 document.addEventListener('DOMContentLoaded', initVisualMap);
 
 /**
- * 載入所有地圖數據
+ * 載入所有地圖數據，同時處理快取和錯誤重試
  * @returns {Promise<void>}
  */
 async function loadMapData() {
-    // 載入地理數據
-    const [map, map2, users, users2] = await Promise.all([
-        fetch('./taiwan-geo-data1.json').then(resp => resp.json()),
-        fetch('./taiwan-geo-data2.json').then(resp => resp.json()),
-        fetch('./population-data.json').then(resp => resp.json()),
-        fetch('./user-distribution.json').then(resp => resp.json())
-    ]);
+    // 檢查是否已有快取數據
+    const cachedData = checkLocalCache();
+    if (cachedData) {
+        console.log('使用本地快取數據');
+        setupCachedData(cachedData);
+        return;
+    }
+
+    // 最多重試3次載入
+    let attempts = 0;
+    const maxAttempts = 3;
     
-    // 儲存數據以便重用
-    mapModule.data = {
-        geoData: { taiwan: map, taiwan2: map2 },
-        populationData: users,
-        usersData: users2
-    };
+    while (attempts < maxAttempts) {
+        try {
+            // 載入地理數據，使用Promise.all並行請求提高效率
+            const [map, map2, users, users2] = await Promise.all([
+                fetchWithTimeout('./taiwan-geo-data1.json', 5000),
+                fetchWithTimeout('./taiwan-geo-data2.json', 5000),
+                fetchWithTimeout('./population-data.json', 5000),
+                fetchWithTimeout('./user-distribution.json', 5000)
+            ]);
+            
+            // 儲存數據以便重用
+            const dataToStore = {
+                geoData: { taiwan: map, taiwan2: map2 },
+                populationData: users,
+                usersData: users2,
+                timestamp: Date.now()
+            };
+
+            mapModule.data = dataToStore;
+            
+            // 註冊地圖數據
+            echarts.registerMap('Taiwan', map);
+            echarts.registerMap('Taiwan2', map2);
+            mapModule.mapRegistered = true;
+            
+            // 將數據儲存到本地快取
+            storeLocalCache(dataToStore);
+            
+            return;
+        } catch (err) {
+            attempts++;
+            console.warn(`數據載入失敗，第${attempts}次重試`, err);
+            
+            if (attempts >= maxAttempts) {
+                throw new Error('無法載入地圖數據，請檢查網絡連接');
+            }
+            
+            // 指數退避策略，避免頻繁請求
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+        }
+    }
+}
+
+/**
+ * 支援逾時的資源請求
+ * @param {string} url - 請求URL
+ * @param {number} timeout - 逾時時間（毫秒）
+ * @returns {Promise<any>} 解析後的JSON數據
+ */
+async function fetchWithTimeout(url, timeout) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (e) {
+        clearTimeout(timeoutId);
+        throw e;
+    }
+}
+
+/**
+ * 檢查本地快取是否可用
+ * @returns {object|null} 快取的數據對象或null
+ */
+function checkLocalCache() {
+    try {
+        const cachedData = localStorage.getItem('taiwan_map_data');
+        if (!cachedData) return null;
+        
+        const data = JSON.parse(cachedData);
+        const now = Date.now();
+        
+        // 檢查快取是否已過期（24小時）
+        if (now - data.timestamp > 24 * 60 * 60 * 1000) {
+            localStorage.removeItem('taiwan_map_data');
+            return null;
+        }
+        
+        return data;
+    } catch (e) {
+        console.warn('讀取快取失敗', e);
+        return null;
+    }
+}
+
+/**
+ * 將數據存儲到本地快取
+ * @param {object} data - 要快取的數據
+ */
+function storeLocalCache(data) {
+    try {
+        const serialized = JSON.stringify(data);
+        localStorage.setItem('taiwan_map_data', serialized);
+        console.log('數據已存入本地快取');
+    } catch (e) {
+        console.warn('無法存儲快取數據', e);
+    }
+}
+
+/**
+ * 設置快取數據
+ * @param {object} cachedData - 快取數據
+ */
+function setupCachedData(cachedData) {
+    mapModule.data = cachedData;
     
     // 註冊地圖數據
-    echarts.registerMap('Taiwan', map);
-    echarts.registerMap('Taiwan2', map2);
+    echarts.registerMap('Taiwan', cachedData.geoData.taiwan);
+    echarts.registerMap('Taiwan2', cachedData.geoData.taiwan2);
     mapModule.mapRegistered = true;
 }
 
@@ -110,6 +227,11 @@ function showOverlay(element, message, type = 'loading') {
 }
 
 // 主函數 - 異步執行地圖初始化
+/**
+ * 初始化視覺化地圖並載入數據
+ * 使用非同步處理以優化載入體驗
+ * @returns {Promise<void>}
+ */
 async function initVisualMap() {
     // 檢查 echarts 是否已載入
     if (typeof echarts === 'undefined') {
@@ -120,6 +242,9 @@ async function initVisualMap() {
         document.body.insertBefore(errorDiv, document.body.firstChild);
         return;
     }
+      // 設定高效能渲染模式，根據裝置性能決定最佳渲染器
+    const renderer = window.devicePixelRatio > 1 || window.innerWidth > 1200 ? 'canvas' : 'svg';
+    console.log(`使用 ${renderer} 渲染模式以優化效能`);
 
     // 檢查並初始化基本元素
     ensureDOMStructure();
@@ -135,9 +260,19 @@ async function initVisualMap() {
     // 更新頁腳中的資料時間
     updateFooterDate();
 
-    // 初始化echarts實例
-    const myChart = echarts.init(document.querySelector('.geo1'), null, { renderer: 'canvas' });
-    const myChart2 = echarts.init(document.querySelector('.geo2'), null, { renderer: 'canvas' });
+    // 初始化echarts實例，使用最適合當前裝置的渲染器
+    const mapOptions = { 
+        renderer: renderer,
+        devicePixelRatio: window.devicePixelRatio || 1
+    };
+    
+    // 基於配置中的設定應用動畫
+    if (mapModule.config.animation === false) {
+        mapOptions.animation = false;
+    }
+    
+    const myChart = echarts.init(document.querySelector('.geo1'), null, mapOptions);
+    const myChart2 = echarts.init(document.querySelector('.geo2'), null, mapOptions);
     
     // 儲存實例以便後續使用
     mapModule.charts = {
@@ -220,14 +355,12 @@ function createMapConfig(title, subtitle, tooltipText, mapName, data, maxValue, 
             text: title,
             subtext: subtitle,
             left: 'center'
-        },
-        tooltip: {
+        },        tooltip: {
             trigger: 'item',
             formatter: `{b}<br/>${tooltipText}: {c} 人`,
             backgroundColor: 'rgba(50,50,50,0.9)',
             borderColor: emphasisColor,
-            textStyle: { color: '#fff' },
-            className: 'custom-tooltip'
+            textStyle: { color: '#fff' }
         },
         visualMap: {
             left: 'left',
@@ -449,16 +582,46 @@ function setupMapControls() {
     mapWrappers.forEach((wrapper, index) => {
         const controls = document.createElement('div');
         controls.className = 'map-controls';
-        
-        // 創建重置視圖按鈕
+          // 創建重置視圖按鈕
         const resetBtn = document.createElement('button');
         resetBtn.textContent = '重設視圖';
         resetBtn.addEventListener('click', function() {
             const chartKey = index === 0 ? 'population' : 'users';
             if (mapModule.charts[chartKey]) {
+                // 恢復視圖狀態（縮放和平移）
                 mapModule.charts[chartKey].dispatchAction({
                     type: 'restore'
                 });
+                  // 清除選中區域的高亮效果
+                mapModule.charts[chartKey].dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0
+                });
+                
+                // 特別移除選中狀態
+                mapModule.charts[chartKey].dispatchAction({
+                    type: 'unselect',
+                    seriesIndex: 0
+                });
+                
+                // 如果當前點擊的地圖是最後選中的區域，也要清除選中狀態
+                if (mapModule.selectedRegion) {
+                    mapModule.selectedRegion = null;
+                    
+                    // 清除所有地圖的選中狀態
+                    Object.values(mapModule.charts).forEach(chart => {
+                        chart.dispatchAction({
+                            type: 'unselect',
+                            seriesIndex: 0
+                        });
+                    });
+                    
+                    // 重置區域詳情區域
+                    const regionDetailDiv = document.getElementById('region-detail');
+                    if (regionDetailDiv) {
+                        regionDetailDiv.innerHTML = '<p class="instruction">請點擊地圖上的任一地區以顯示詳細資訊</p>';
+                    }
+                }
             }
         });
           // 創建開關標籤顯示按鈕
@@ -495,23 +658,81 @@ function setupMapControls() {
         const globalControls = document.createElement('div');
         globalControls.className = 'global-controls';
         globalControls.style.textAlign = 'center';
-        globalControls.style.margin = '20px 0';
-        
-        // 創建重置所有選擇的按鈕
+        globalControls.style.margin = '20px 0';        // 創建重置所有選擇的按鈕
         const resetSelectionBtn = document.createElement('button');
         resetSelectionBtn.textContent = '重置選擇';
         resetSelectionBtn.addEventListener('click', function() {
-            // 清除所有地圖上的高亮
-            Object.values(mapModule.charts).forEach(chart => {
-                chart.dispatchAction({
-                    type: 'downplay'
-                });
-            });
+            // 清除選中記錄
+            mapModule.selectedRegion = null;
             
             // 重置區域詳情區域
             const regionDetailDiv = document.getElementById('region-detail');
             if (regionDetailDiv) {
                 regionDetailDiv.innerHTML = '<p class="instruction">請點擊地圖上的任一地區以顯示詳細資訊</p>';
+            }
+            
+            // 直接修改每個地圖的選中樣式設定，強制清除選中效果
+            Object.values(mapModule.charts).forEach(chart => {
+                // 徹底重置地圖 - 完全重新設置option
+                const option = chart.getOption();
+                if (option && option.series && option.series[0]) {
+                    // 先使用 toolbox 的 restore 功能
+                    chart.dispatchAction({
+                        type: 'restore'
+                    });
+                    
+                    // 然後直接重設選中樣式
+                    const newOption = {
+                        series: [{
+                            select: {
+                                disabled: true  // 禁用選中效果
+                            },
+                            selectedMode: false,  // 禁用選中模式
+                            data: option.series[0].data  // 保持原始數據
+                        }]
+                    };
+                    
+                    // 重新設置地圖選項
+                    chart.setOption(newOption, false);
+                    
+                    // 然後再重新啟用選中效果
+                    setTimeout(() => {
+                        chart.setOption({
+                            series: [{
+                                select: {
+                                    disabled: false
+                                },
+                                selectedMode: 'single'
+                            }]
+                        }, false);
+                    }, 100);
+                }
+            });
+            
+            // 顯示操作成功的提示訊息
+            const container = document.querySelector('.map-container');
+            if (container) {
+                const message = document.createElement('div');
+                message.className = 'success-message';
+                message.textContent = '已重置所有選擇狀態';
+                message.style.position = 'fixed';
+                message.style.top = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(46, 204, 113, 0.9)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '4px';
+                message.style.zIndex = '9999';
+                message.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                document.body.appendChild(message);
+                
+                // 消息顯示 2 秒後消失
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => message.remove(), 500);
+                }, 2000);
             }
         });
         
