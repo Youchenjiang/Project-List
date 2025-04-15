@@ -102,6 +102,78 @@ header p {
     color: white;
     border: none;
     border-radius: 4px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.map-controls button:hover {
+    background-color: #2980b9;
+}
+
+/* 地圖內標題元素樣式 */
+.map-wrapper h2 {
+    padding: 10px 15px;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    text-align: center;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+/* 地圖容器樣式 */
+.geo1, .geo2 {
+    height: 500px;
+    width: 100%;
+}
+
+/* 全局控制區域樣式 */
+.global-controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* 資料分析區域樣式 */
+.data-analysis {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* 地區詳細數據樣式 */
+.region-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.region-stat.highlight {
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.region-stat.above-average .stat-value {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.region-stat.below-average .stat-value {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* 修正按鈕樣式 */
+.map-controls button {
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -355,23 +427,40 @@ footer p {
 /* 全局控制按鈕 */
 .global-controls {
     text-align: center;
-    margin: 20px 0;
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 按鈕之間的間距 */
 }
 
 .global-controls button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #2c3e50;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 140px; /* 確保按鈕寬度一致 */
 }
 
 .global-controls button:hover {
     background-color: #34495e;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 添加聯動開關按鈕的特殊樣式 */
+.linkage-toggle-btn {
+    background-color: #3498db !important;
+}
+
+.linkage-toggle-btn:hover {
+    background-color: #2980b9 !important;
+}
+
+.linkage-toggle-btn.disabled {
+    background-color: #7f8c8d !important;
 }

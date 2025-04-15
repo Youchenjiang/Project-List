@@ -21,43 +21,61 @@
  * @last-updated 2025-04-12
  */
 
-// 處理 ECharts 可能不存在的情況（適應不同的執行環境）
-(function(global) {
-    // 如果在瀏覽器環境中
-    if (typeof window !== 'undefined') {
-        // 檢查是否已有 echarts 全局對象
-        if (typeof window.echarts === 'undefined') {
-            // 如果沒有，嘗試創建一個最小的替代對象，並記錄錯誤
-            window.echarts = {
-                init: function() {
-                    console.error('ECharts 庫未載入！請確保在 HTML 中引入了 ECharts。');
-                    return {
-                        setOption: function() {},
-                        on: function() {},
-                        resize: function() {},
-                        showLoading: function() {},
-                        hideLoading: function() {},
-                        dispatchAction: function() {}
-                    };
-                },
-                registerMap: function() {
-                    console.error('ECharts 庫未載入！無法註冊地圖。');
-                }
-            };
-        }
+// 處理 ECharts 可能不存在的情況
+(function() {
+    if (typeof window !== 'undefined' && typeof window.echarts === 'undefined') {
+        // 創建簡易替代對象並記錄錯誤
+        const mockFn = () => {};
+        const mockObj = { setOption: mockFn, on: mockFn, resize: mockFn, showLoading: mockFn, hideLoading: mockFn, dispatchAction: mockFn };
+        window.echarts = {
+            init: function() {
+                console.error('ECharts 庫未載入！請確保在 HTML 中引入了 ECharts。');
+                return mockObj;
+            },
+            registerMap: function() {
+                console.error('ECharts 庫未載入！無法註冊地圖。');
+            }
+        };
     }
-    // 如果在 Node.js 或其他環境中，可以增加相應的處理
-})(typeof window !== 'undefined' ? window : this);
+})();
 
 // 全局變量，存儲地圖實例和數據以便重用
 const mapModule = {
     charts: {},
     data: {},
-    mapRegistered: false
+    mapRegistered: false,
+    selectedRegion: null, // 追蹤當前選中的區域
+    mapLinkageEnabled: true // 控制地圖聯動功能
 };
 
 // 確保DOM加載完成後再執行初始化
 document.addEventListener('DOMContentLoaded', initVisualMap);
+
+/**
+ * 載入所有地圖數據
+ * @returns {Promise<void>}
+ */
+async function loadMapData() {
+    // 載入地理數據
+    const [map, map2, users, users2] = await Promise.all([
+        fetch('./taiwan-geo-data1.json').then(resp => resp.json()),
+        fetch('./taiwan-geo-data2.json').then(resp => resp.json()),
+        fetch('./population-data.json').then(resp => resp.json()),
+        fetch('./user-distribution.json').then(resp => resp.json())
+    ]);
+    
+    // 儲存數據以便重用
+    mapModule.data = {
+        geoData: { taiwan: map, taiwan2: map2 },
+        populationData: users,
+        usersData: users2
+    };
+    
+    // 註冊地圖數據
+    echarts.registerMap('Taiwan', map);
+    echarts.registerMap('Taiwan2', map2);
+    mapModule.mapRegistered = true;
+}
 
 /**
  * 顯示加載狀態或錯誤訊息
@@ -126,34 +144,18 @@ async function initVisualMap() {
         population: myChart,
         users: myChart2
     };
-    
-    try {        // 載入地理數據
-        const [map, map2, users, users2] = await Promise.all([
-            fetch('./taiwan-geo-data1.json').then(resp => resp.json()),
-            fetch('./taiwan-geo-data2.json').then(resp => resp.json()),
-            fetch('./population-data.json').then(resp => resp.json()),
-            fetch('./user-distribution.json').then(resp => resp.json())
-        ]);
-        
-        // 儲存數據以便重用
-        mapModule.data = {
-            geoData: { taiwan: map, taiwan2: map2 },
-            populationData: users,
-            usersData: users2
-        };
-        
-        // 註冊地圖數據
-        echarts.registerMap('Taiwan', map);
-        echarts.registerMap('Taiwan2', map2);
-        mapModule.mapRegistered = true;
+    try {
+        // 載入所有地圖數據並配置
+        await loadMapData();
+          // 配置並顯示地圖
+        setupPopulationMap(myChart, mapModule.data.populationData);
+        setupUsersMap(myChart2, mapModule.data.usersData);
         
         // 移除載入狀態
-        loading1.remove();
-        loading2.remove();
-        
-        // 配置並顯示地圖
-        setupPopulationMap(myChart, users);
-        setupUsersMap(myChart2, users2);
+        setTimeout(() => {
+            loading1.remove();
+            loading2.remove();
+        }, 300); // 短暫延遲確保地圖渲染完成後才移除載入狀態
         
         // 設置地圖聯動效果
         setupMapLinkage(myChart, myChart2);
@@ -200,43 +202,44 @@ function updateFooterDate() {
  * @param {Object} chart - ECharts 實例
  * @param {Array} data - 人口數據
  */
-function setupPopulationMap(chart, data) {
-    const populationConfig = {
-        //標題
+/**
+ * 創建地圖基礎配置
+ * @param {string} title - 地圖標題
+ * @param {string} subtitle - 地圖副標題
+ * @param {string} tooltipText - 提示文本格式
+ * @param {string} mapName - 地圖名稱
+ * @param {Array} data - 地圖數據
+ * @param {number} maxValue - 最大值
+ * @param {Array} colors - 顏色範圍
+ * @param {string} emphasisColor - 強調顏色
+ * @returns {Object} 地圖配置對象
+ */
+function createMapConfig(title, subtitle, tooltipText, mapName, data, maxValue, colors, emphasisColor) {
+    return {
         title: {
-            text: '台灣地圖',
-            subtext: '各縣市人口數',
+            text: title,
+            subtext: subtitle,
             left: 'center'
         },
-        //各區塊提示文字
         tooltip: {
             trigger: 'item',
-            formatter: '{b}<br/>人口: {c} 人',
+            formatter: `{b}<br/>${tooltipText}: {c} 人`,
             backgroundColor: 'rgba(50,50,50,0.9)',
-            borderColor: '#3498db',
-            textStyle: {
-                color: '#fff'
-            },
+            borderColor: emphasisColor,
+            textStyle: { color: '#fff' },
             className: 'custom-tooltip'
         },
         visualMap: {
-            //控制條靠左
             left: 'left',
-            //控制條靠中
             top: 'center',
-            //區間最小值
             min: 0,
-            //區間最大值
-            max: 4042587,
-            //區間界線文字
+            max: maxValue,
             text: ['高', '低'],
-            //顏色
             calculable: true,
-            inRange: {
-                color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4', '#313695']
-            },
+            inRange: { color: colors },
             textStyle: {
-                color: '#333'
+                color: '#333',
+                fontWeight: 'bold'
             }
         },
         toolbox: {
@@ -251,28 +254,20 @@ function setupPopulationMap(chart, data) {
             }
         },
         series: [{
-            //圖層名稱
-            name: '人口數',
-            //圖層類型
+            name: subtitle,
             type: 'map',
-            //讀取註冊的地圖
-            map: 'Taiwan',
-            //數據來源
+            map: mapName,
             data: data,
-            //滑鼠縮放
             roam: true,
-            //縮放比例控制
             scaleLimit: {
                 min: 0.7,
                 max: 3
             },
-            // 標籤設置
             label: {
                 show: true,
                 formatter: '{b}',
                 fontSize: 10
             },
-            // 強調效果
             emphasis: {
                 label: {
                     show: true,
@@ -280,13 +275,31 @@ function setupPopulationMap(chart, data) {
                     fontWeight: 'bold'
                 },
                 itemStyle: {
-                    areaColor: '#3498db'
+                    areaColor: emphasisColor
                 }
             }
         }]
     };
+}
+
+/**
+ * 配置人口地圖
+ * @param {Object} chart - ECharts 實例
+ * @param {Array} data - 人口數據
+ */
+function setupPopulationMap(chart, data) {
+    const config = createMapConfig(
+        '台灣地圖',
+        '各縣市人口數',
+        '人口',
+        'Taiwan',
+        data,
+        4042587,
+        ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4', '#313695'],
+        '#3498db'
+    );
     
-    chart.setOption(populationConfig);
+    chart.setOption(config);
 }
 
 /**
@@ -295,92 +308,18 @@ function setupPopulationMap(chart, data) {
  * @param {Array} data - 用戶數據
  */
 function setupUsersMap(chart, data) {
-    const usersConfig = {
-        //標題
-        title: {
-            text: '台灣地圖',
-            subtext: '各縣市用戶數',
-            left: 'center'
-        },
-        //各區塊提示文字
-        tooltip: {
-            trigger: 'item',
-            formatter: '{b}<br/>註冊用戶: {c} 人',
-            backgroundColor: 'rgba(50,50,50,0.9)',
-            borderColor: '#2ecc71',
-            textStyle: {
-                color: '#fff'
-            },
-            className: 'custom-tooltip'
-        },
-        visualMap: {
-            //控制條靠左
-            left: 'left',
-            //控制條靠中
-            top: 'center',
-            //區間最小值
-            min: 0,
-            //區間最大值
-            max: 50,
-            //區間界線文字
-            text: ['高', '低'],
-            //顏色
-            calculable: true,
-            inRange: {
-                color: ['#e6f7ff', '#c6e6ff', '#95d0fc', '#60b3ff', '#1a88ff']
-            },
-            textStyle: {
-                color: '#333'
-            }
-        },
-        toolbox: {
-            show: true,
-            orient: 'vertical',
-            left: 'right',
-            top: 'center',
-            feature: {
-                dataView: { readOnly: false },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        series: [{
-            //圖層名稱
-            name: '用戶數',
-            //圖層類型
-            type: 'map',
-            //讀取註冊的地圖
-            map: 'Taiwan2',
-            //數據來源
-            data: data,
-            //滑鼠縮放
-            roam: true,
-            //縮放比例控制
-            scaleLimit: {
-                min: 0.7,
-                max: 3
-            },
-            // 標籤設置
-            label: {
-                show: true,
-                formatter: '{b}',
-                fontSize: 10
-            },
-            // 強調效果
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: 12,
-                    fontWeight: 'bold'
-                },
-                itemStyle: {
-                    areaColor: '#2ecc71'
-                }
-            }
-        }]
-    };
+    const config = createMapConfig(
+        '台灣地圖',
+        '各縣市用戶數',
+        '註冊用戶',
+        'Taiwan2',
+        data,
+        50,
+        ['#e6f7ff', '#c6e6ff', '#95d0fc', '#60b3ff', '#1a88ff'],
+        '#2ecc71'
+    );
     
-    chart.setOption(usersConfig);
+    chart.setOption(config);
 }
 
 /**
@@ -389,60 +328,111 @@ function setupUsersMap(chart, data) {
  * @param {Object} chart2 - 第二個地圖實例
  */
 function setupMapLinkage(chart1, chart2) {
-    chart1.on('georoam', function(params) {
-        if (params.zoom !== undefined) {
-            chart2.setOption({
+    // 記錄是否正在處理聯動，避免無限循環
+    let isProcessingLinkage = false;
+    
+    // 獲取圖表當前視圖狀態的函數
+    function getChartViewState(chart) {
+        if (!chart || !chart.getOption()) return null;
+        
+        const option = chart.getOption();
+        if (!option.series || !option.series[0]) return null;
+        
+        return {
+            zoom: option.series[0].zoom || 1,
+            center: option.series[0].center || null
+        };
+    }
+    
+    // 同步兩個地圖視圖的函數
+    function syncMapViews(sourceChart, targetChart, viewState) {
+        // 如果聯動被禁用或正在處理聯動，則不操作
+        if (!mapModule.mapLinkageEnabled || isProcessingLinkage) return;
+        
+        try {
+            // 設置標誌，避免觸發循環聯動
+            isProcessingLinkage = true;
+            
+            // 檢查是否有有效的視圖狀態
+            if (!viewState || viewState.zoom === undefined) return;
+            
+            // 同步目標地圖的視圖
+            targetChart.setOption({
                 series: [{
-                    zoom: params.zoom,
-                    center: params.center
+                    zoom: viewState.zoom,
+                    center: viewState.center || undefined
                 }]
-            });
+            }, { notMerge: false, lazyUpdate: true, silent: true });
+            
+        } finally {
+            // 確保處理完成後重置標誌
+            setTimeout(() => {
+                isProcessingLinkage = false;
+            }, 50);
         }
+    }
+    
+    // 設置地圖縮放和平移事件處理
+    chart1.off('georoam').on('georoam', function() {
+        // 使用延遲以確保獲取最新狀態
+        setTimeout(() => {
+            const state = getChartViewState(chart1);
+            syncMapViews(chart1, chart2, state);
+        }, 0);
     });
     
-    chart2.on('georoam', function(params) {
-        if (params.zoom !== undefined) {
-            chart1.setOption({
-                series: [{
-                    zoom: params.zoom,
-                    center: params.center
-                }]
-            });
-        }
+    chart2.off('georoam').on('georoam', function() {
+        // 使用延遲以確保獲取最新狀態
+        setTimeout(() => {
+            const state = getChartViewState(chart2);
+            syncMapViews(chart2, chart1, state);
+        }, 0);
     });
     
     // 添加選中區域的聯動高亮
-    chart1.on('mouseover', {seriesIndex: 0}, function(params) {
-        const name = params.name;
-        chart2.dispatchAction({
-            type: 'highlight',
-            name: name
+    // 使用函式來減少重複程式碼
+    function setupHoverLink(sourceChart, targetChart) {
+        sourceChart.off('mouseover').on('mouseover', {seriesIndex: 0}, function(params) {
+            if (!mapModule.mapLinkageEnabled) return; // 如果聯動被禁用，則不進行操作
+            
+            targetChart.dispatchAction({
+                type: 'highlight',
+                name: params.name
+            });
         });
-    });
+        
+        sourceChart.off('mouseout').on('mouseout', {seriesIndex: 0}, function(params) {
+            if (!mapModule.mapLinkageEnabled) return; // 如果聯動被禁用，則不進行操作
+            
+            targetChart.dispatchAction({
+                type: 'downplay',
+                name: params.name
+            });
+        });
+    }
     
-    chart1.on('mouseout', {seriesIndex: 0}, function(params) {
-        const name = params.name;
-        chart2.dispatchAction({
-            type: 'downplay',
-            name: name
-        });
-    });
+    // 雙向設置懸停聯動
+    setupHoverLink(chart1, chart2);
+    setupHoverLink(chart2, chart1);
     
-    chart2.on('mouseover', {seriesIndex: 0}, function(params) {
-        const name = params.name;
-        chart1.dispatchAction({
-            type: 'highlight',
-            name: name
-        });
-    });
-    
-    chart2.on('mouseout', {seriesIndex: 0}, function(params) {
-        const name = params.name;
-        chart1.dispatchAction({
-            type: 'downplay',
-            name: name
-        });
-    });
+    // 提供切換聯動功能的函數
+    mapModule.toggleMapLinkage = function(enable) {
+        mapModule.mapLinkageEnabled = enable;
+        
+        // 如果啟用聯動，立即同步兩個地圖的視圖
+        if (enable) {
+            // 取較新狀態的圖表作為基準來同步
+            setTimeout(() => {
+                const state1 = getChartViewState(chart1);
+                const state2 = getChartViewState(chart2);
+                
+                if (state1 && state2) {
+                    // 使用第一個地圖的視圖狀態同步第二個地圖
+                    syncMapViews(chart1, chart2, state1);
+                }
+            }, 0);
+        }
+    };
 }
 
 /**
@@ -500,8 +490,7 @@ function setupMapControls() {
         
         // 將控制區域添加到地圖包裝器
         wrapper.appendChild(controls);
-    });
-      // 如果有需要，可以添加全局控制區域
+    });      // 如果有需要，可以添加全局控制區域
     if (mapWrappers.length >= 2) {
         const globalControls = document.createElement('div');
         globalControls.className = 'global-controls';
@@ -526,7 +515,30 @@ function setupMapControls() {
             }
         });
         
+        // 創建地圖聯動切換按鈕
+        const toggleLinkageBtn = document.createElement('button');
+        toggleLinkageBtn.textContent = '關閉地圖聯動';
+        toggleLinkageBtn.className = 'linkage-toggle-btn';
+        toggleLinkageBtn.setAttribute('data-linkage-enabled', 'true');
+        toggleLinkageBtn.addEventListener('click', function() {
+            const isEnabled = toggleLinkageBtn.getAttribute('data-linkage-enabled') === 'true';
+            const newState = !isEnabled;
+            
+            // 切換聯動狀態
+            if (typeof mapModule.toggleMapLinkage === 'function') {
+                mapModule.toggleMapLinkage(newState);
+            }
+            
+            // 更新按鈕文字和狀態
+            toggleLinkageBtn.textContent = newState ? '關閉地圖聯動' : '開啟地圖聯動';
+            toggleLinkageBtn.setAttribute('data-linkage-enabled', newState.toString());
+            
+            // 可視化反饋
+            toggleLinkageBtn.classList.toggle('disabled', !newState);
+        });
+        
         globalControls.appendChild(resetSelectionBtn);
+        globalControls.appendChild(toggleLinkageBtn);
         container.parentNode.insertBefore(globalControls, container.nextSibling);
     }
 }
@@ -541,25 +553,8 @@ function createDataAnalysisArea() {
         return null;
     }
     
-    // 計算所有區域的比例數據
-    const allResults = mapModule.data.populationData.map(popItem => {
-        const userItem = mapModule.data.usersData.find(u => u.name === popItem.name);
-        if (!userItem) return null;
-        
-        const ratio = userItem.value / popItem.value * 10000; // 每萬人用戶數
-        return {
-            name: popItem.name,
-            population: popItem.value,
-            users: userItem.value,
-            ratio: parseFloat(ratio.toFixed(2))
-        };
-    }).filter(item => item !== null);
-    
-    // 計算統計數據
-    allResults.sort((a, b) => b.ratio - a.ratio);
-    const highestRegion = allResults[0];
-    const lowestRegion = allResults[allResults.length-1];
-    const averageRatio = parseFloat((allResults.reduce((sum, item) => sum + item.ratio, 0) / allResults.length).toFixed(2));
+    // 使用通用函數計算區域比例和統計數據
+    const { highestRegion, lowestRegion, averageRatio } = calculateRegionRatios();
     
     // 創建數據分析區域
     let analysisDiv = document.querySelector('.data-analysis');
@@ -622,39 +617,75 @@ function setupRegionClickHandler() {
     // 為兩個地圖添加點擊事件
     ['population', 'users'].forEach(chartKey => {
         if (mapModule.charts[chartKey]) {
-            mapModule.charts[chartKey].on('click', function(params) {
-                const regionName = params.name;
+            mapModule.charts[chartKey].on('click', function(params) {                const regionName = params.name;
+                  // 不管是否點擊同一個區域，都顯示詳細資訊並保持選中狀態
+                // 顯示區域詳細資訊
                 showRegionDetail(regionName, regionDetailDiv);
                 
-                // 高亮顯示所選區域
+                // 如果之前已選中區域，先清除高亮
+                if (mapModule.selectedRegion) {
+                    Object.values(mapModule.charts).forEach(chart => {
+                        chart.dispatchAction({
+                            type: 'downplay',
+                            seriesIndex: 0
+                        });
+                    });
+                }
+                
+                // 在兩個地圖上設置新選中區域的高亮
                 Object.values(mapModule.charts).forEach(chart => {
+                    // 使用 select 類型而不是 highlight，確保選中效果持續存在
                     chart.dispatchAction({
-                        type: 'highlight',
+                        type: 'select',
+                        seriesIndex: 0,
                         name: regionName
                     });
                 });
+                  // 更新選中區域
+                mapModule.selectedRegion = regionName;
             });
         }
     });
 }
 
+// 已刪除 getNormalizedRegionName 函數，因為縣市名稱已統一
+
 /**
- * 獲取標準化的區域名稱（處理「台」和「臺」的差異）
- * @param {string} name - 原始區域名稱
- * @returns {string} 標準化後的名稱
+ * 計算所有區域的人口與用戶比例數據
+ * @returns {Object} 包含所有比例數據和統計信息
  */
-function getNormalizedRegionName(name) {
-    // 建立台灣地名對照表
-    const nameMapping = {
-        '台北市': '臺北市', '臺北市': '台北市',
-        '台中市': '臺中市', '臺中市': '台中市',
-        '台南市': '臺南市', '臺南市': '台南市',
-        '台東縣': '臺東縣', '臺東縣': '台東縣',
-        '桃園市': '桃園縣', '桃園縣': '桃園市'
-    };
+function calculateRegionRatios() {
+    if (!mapModule.data.populationData || !mapModule.data.usersData) {
+        console.error('數據不可用，無法計算比例');
+        return { highestRegion: null, lowestRegion: null, averageRatio: 0 };
+    }
+
+    // 計算所有區域的比例數據
+    const allResults = mapModule.data.populationData.map(popItem => {
+        const userItem = mapModule.data.usersData.find(u => u.name === popItem.name);
+        if (!userItem || !popItem.value || popItem.value <= 0) return null;
+        
+        const ratio = userItem.value / popItem.value * 10000; // 每萬人用戶數
+        return {
+            name: popItem.name,
+            population: popItem.value,
+            users: userItem.value,
+            ratio: parseFloat(ratio.toFixed(2))
+        };
+    }).filter(item => item !== null);
     
-    // 返回對照表中的名稱，若沒有則返回原名
-    return nameMapping[name] || name;
+    if (allResults.length === 0) {
+        return { highestRegion: null, lowestRegion: null, averageRatio: 0 };
+    }
+
+    // 計算統計數據
+    allResults.sort((a, b) => b.ratio - a.ratio);
+    const highestRegion = allResults[0];
+    const lowestRegion = allResults[allResults.length-1];
+    const averageRatio = parseFloat((allResults.reduce((sum, item) => sum + item.ratio, 0) / allResults.length).toFixed(2));
+
+    // 只返回需要使用的數據，不再返回 allResults
+    return { highestRegion, lowestRegion, averageRatio };
 }
 
 /**
@@ -662,41 +693,25 @@ function getNormalizedRegionName(name) {
  * @param {string} regionName - 區域名稱
  * @param {HTMLElement} detailContainer - 顯示詳細信息的容器
  */
-function showRegionDetail(regionName, detailContainer) {
-    // 查找區域數據，考慮可能的名稱差異
-    const normalizedName = getNormalizedRegionName(regionName);
-    
+function showRegionDetail(regionName, detailContainer) {    // 直接查找區域數據，因為縣市名稱已統一
     let populationData = mapModule.data.populationData.find(item => item.name === regionName);
     let userData = mapModule.data.usersData.find(item => item.name === regionName);
-    
-    // 如果找不到直接匹配的數據，嘗試使用標準化名稱
-    if (!populationData) {
-        populationData = mapModule.data.populationData.find(item => item.name === normalizedName);
-    }
-    
-    if (!userData) {
-        userData = mapModule.data.usersData.find(item => 
-            item.name === normalizedName || 
-            getNormalizedRegionName(item.name) === regionName
-        );
-    }
-    
-    if (!populationData || !userData) {
+      if (!populationData || !userData) {
         detailContainer.innerHTML = `<p class="error">無法找到 ${regionName} 的完整數據</p>`;
+        return;
+    }
+    
+    // 確保數據值有效
+    if (!populationData.value || populationData.value <= 0) {
+        detailContainer.innerHTML = `<p class="error">${regionName} 的人口數據無效</p>`;
         return;
     }
     
     // 計算比例
     const ratio = userData.value / populationData.value * 10000; // 每萬人用戶數
     
-    // 計算全台平均值（用於比較）
-    const allRatios = mapModule.data.populationData.map(popItem => {
-        const userItem = mapModule.data.usersData.find(u => u.name === popItem.name);
-        if (!userItem) return null;
-        return userItem.value / popItem.value * 10000;
-    }).filter(r => r !== null);
-    
-    const averageRatio = allRatios.reduce((sum, r) => sum + r, 0) / allRatios.length;
+    // 使用共用函數獲取全台平均值
+    const { averageRatio } = calculateRegionRatios();
     const comparedToAvg = parseFloat(((ratio / averageRatio - 1) * 100).toFixed(1));
     const comparedClass = comparedToAvg >= 0 ? 'above-average' : 'below-average';
     const comparedText = comparedToAvg >= 0 ? `高於平均 ${Math.abs(comparedToAvg)}%` : `低於平均 ${Math.abs(comparedToAvg)}%`;
@@ -728,6 +743,31 @@ function showRegionDetail(regionName, detailContainer) {
 /**
  * 確保DOM結構完整，如果在框架外運行需要初始化基本元素
  */
+/**
+ * 創建地圖容器元素
+ * @param {string} title - 地圖標題
+ * @param {string} className - 地圖容器的 CSS 類名
+ * @returns {HTMLElement} 地圖容器元素
+ */
+function createMapWrapper(title, className) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'map-wrapper';
+    
+    const titleElem = document.createElement('h2');
+    titleElem.textContent = title;
+    
+    const mapContainer = document.createElement('div');
+    mapContainer.className = className;
+    
+    wrapper.appendChild(titleElem);
+    wrapper.appendChild(mapContainer);
+    
+    return wrapper;
+}
+
+/**
+ * 確保DOM結構完整，如果在框架外運行需要初始化基本元素
+ */
 function ensureDOMStructure() {
     // 檢查是否在獨立環境運行
     if (!document.querySelector('.geo1') || !document.querySelector('.geo2')) {
@@ -741,64 +781,13 @@ function ensureDOMStructure() {
         `;
         document.body.appendChild(header);
         
+        // 創建地圖容器
         const container = document.createElement('div');
         container.className = 'map-container';
-        container.style.display = 'flex';
-        container.style.flexWrap = 'wrap';
-        container.style.gap = '20px';
-        container.style.padding = '20px';
         
-        // 創建第一個地圖容器
-        const map1Wrapper = document.createElement('div');
-        map1Wrapper.className = 'map-wrapper';
-        map1Wrapper.style.flex = '1';
-        map1Wrapper.style.minWidth = 'calc(50% - 10px)';
-        map1Wrapper.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        map1Wrapper.style.borderRadius = '8px';
-        map1Wrapper.style.overflow = 'hidden';
-        map1Wrapper.style.backgroundColor = '#fff';
-        
-        const map1Title = document.createElement('h2');
-        map1Title.textContent = '台灣人口分布';
-        map1Title.style.padding = '10px 15px';
-        map1Title.style.margin = '0';
-        map1Title.style.borderBottom = '1px solid #eee';
-        map1Title.style.backgroundColor = '#f8f9fa';
-        map1Title.style.textAlign = 'center';
-        
-        const map1 = document.createElement('div');
-        map1.className = 'geo1';
-        map1.style.height = '500px';
-        map1.style.width = '100%';
-        
-        map1Wrapper.appendChild(map1Title);
-        map1Wrapper.appendChild(map1);
-        
-        // 創建第二個地圖容器
-        const map2Wrapper = document.createElement('div');
-        map2Wrapper.className = 'map-wrapper';
-        map2Wrapper.style.flex = '1';
-        map2Wrapper.style.minWidth = 'calc(50% - 10px)';
-        map2Wrapper.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        map2Wrapper.style.borderRadius = '8px';
-        map2Wrapper.style.overflow = 'hidden';
-        map2Wrapper.style.backgroundColor = '#fff';
-        
-        const map2Title = document.createElement('h2');
-        map2Title.textContent = '台灣用戶分布';
-        map2Title.style.padding = '10px 15px';
-        map2Title.style.margin = '0';
-        map2Title.style.borderBottom = '1px solid #eee';
-        map2Title.style.backgroundColor = '#f8f9fa';
-        map2Title.style.textAlign = 'center';
-        
-        const map2 = document.createElement('div');
-        map2.className = 'geo2';
-        map2.style.height = '500px';
-        map2.style.width = '100%';
-        
-        map2Wrapper.appendChild(map2Title);
-        map2Wrapper.appendChild(map2);
+        // 使用輔助函數創建地圖容器
+        const map1Wrapper = createMapWrapper('台灣人口分布', 'geo1');
+        const map2Wrapper = createMapWrapper('台灣用戶分布', 'geo2');
         
         // 將兩個地圖容器添加到主容器
         container.appendChild(map1Wrapper);
