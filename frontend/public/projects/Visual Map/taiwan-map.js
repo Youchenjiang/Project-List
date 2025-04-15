@@ -112,7 +112,9 @@ async function loadMapData() {
             }
             
             // 指數退避策略，避免頻繁請求
-            await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+            // 在閉包外部捕獲 attempts 的當前值
+            const currentAttempt = attempts;
+            await new Promise(resolve => setTimeout(resolve, 1000 * currentAttempt));
         }
     }
 }
@@ -246,7 +248,7 @@ async function initVisualMap() {
     const renderer = window.devicePixelRatio > 1 || window.innerWidth > 1200 ? 'canvas' : 'svg';
     console.log(`使用 ${renderer} 渲染模式以優化效能`);
 
-    // 檢查並初始化基本元素
+    // 確保DOM結構完整
     ensureDOMStructure();
     
     // 獲取地圖容器元素
