@@ -218,7 +218,7 @@
   width: 200px;
   height: 300px;
   position: relative;
-  background-image: url('C:\\Users\\g1014\\Documents\\GitHub\\Project-List\\frontend\\public\\assets\\images\\belle.svg');
+  background-image: url('../../public/assets/images/belle.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -442,6 +442,31 @@
   color: #666;
 }
 
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--character-color, #f5d8a8);
+  border-radius: 18px;
+  width: fit-content;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  animation: typingAnimation 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingAnimation {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
 .message-input {
   display: flex;
   padding: 10px;
@@ -472,7 +497,7 @@
 }
 
 .message-input button:hover {
-  background-color: #ffb6c1; /* hover 時變為粉紅色 */
+  background-color: #ffb6c1; /* hover 時變为粉紅色 */
 }
 
 /* 動作按鈕 */

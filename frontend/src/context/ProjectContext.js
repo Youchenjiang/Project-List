@@ -7,6 +7,7 @@ const ProjectContext = createContext();
 // 創建Provider組件
 export const ProjectProvider = ({ children }) => {
     const [selectedProject, setSelectedProject] = useState(null);
+    const [showProjectInfo, setShowProjectInfo] = useState(false);
     
     // 獲取當前選中項目的詳細信息
     const currentProject = selectedProject 
@@ -18,7 +19,9 @@ export const ProjectProvider = ({ children }) => {
         projects,
         selectedProject,
         setSelectedProject,
-        currentProject
+        currentProject,
+        showProjectInfo,
+        setShowProjectInfo
     };
     
     return (

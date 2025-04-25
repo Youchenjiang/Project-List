@@ -6,19 +6,24 @@ const Sidebar = () => {
     const { projects, setSelectedProject } = useProject();
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(false);
-      // 處理過渡效果
+
+    // 處理過渡效果
     useEffect(() => {
         if (isSidebarExpanded) {
             setIsTransitioning(true);
-            const timer = setTimeout(() => setIsTransitioning(false), 350); // 增加一點時間，確保過渡效果完成
+            const timer = setTimeout(() => setIsTransitioning(false), 350);
             return () => clearTimeout(timer);
         } else {
-            // 收縮時也設置過渡狀態，延遲移除，確保文字有足夠的時間淡出
             setIsTransitioning(true);
             const timer = setTimeout(() => setIsTransitioning(false), 300);
             return () => clearTimeout(timer);
         }
-    }, [isSidebarExpanded]);
+    }, [isSidebarExpanded]);    // 處理專案介紹顯示
+    const { setShowProjectInfo } = useProject();
+    const handleProjectInfoClick = () => {
+        setSelectedProject(null);
+        setShowProjectInfo(true);
+    };
 
     return (
         <nav className={`sidebar ${isSidebarExpanded ? 'expanded' : ''} ${isTransitioning ? 'transitioning' : ''}`} 
@@ -39,7 +44,8 @@ const Sidebar = () => {
                             color: 'inherit',
                             width: '100%'
                         }}
-                    >                        <div className="project-icon">🏠</div>
+                    >
+                        <div className="project-icon">🏠</div>
                         {(isSidebarExpanded || isTransitioning) && (
                             <div className="project-text">
                                 <h3>回首頁</h3>
@@ -47,6 +53,30 @@ const Sidebar = () => {
                             </div>
                         )}
                     </button>
+
+                    <button 
+                        className="project-item info-button"
+                        onClick={handleProjectInfoClick}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            border: 'none',
+                            background: 'none',
+                            color: 'inherit',
+                            width: '100%'
+                        }}
+                    >
+                        <div className="project-icon">ℹ️</div>
+                        {(isSidebarExpanded || isTransitioning) && (
+                            <div className="project-text">
+                                <h3>專案介紹</h3>
+                                <p>查看完整專案說明文件</p>
+                            </div>
+                        )}
+                    </button>
+
                     <hr style={{ margin: '10px 5px', borderColor: '#ddd', opacity: 0.5 }} />
                     {projects.map((project) => (
                         <button 
