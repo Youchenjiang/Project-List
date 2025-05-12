@@ -49,7 +49,7 @@ func main() {
 	fmt.Println("開啟 CORS 支持...")
 	fmt.Println("Server is running on", serverAddr)
 	fmt.Println("API 端點: /api/openai/chat")
-	fmt.Println("使用 API 金鑰:", cfg.OpenAIAPIKey[:5]+"...")
+	fmt.Println("API 金鑰已加載")
 
 	err := http.ListenAndServe(serverAddr, handler)
 	if err != nil {
