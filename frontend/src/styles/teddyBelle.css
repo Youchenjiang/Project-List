@@ -12,6 +12,74 @@
   box-sizing: border-box;
 }
 
+/* API 狀態顯示區域 */
+.api-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+
+.loading-status {
+  color: #0066cc;
+  font-weight: bold;
+  animation: blink 1.5s infinite;
+}
+
+.error-status {
+  color: #cc3300;
+  font-weight: bold;
+}
+
+.api-note {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 11px;
+  color: #777;
+}
+
+.test-connection-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.test-connection-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.test-result {
+  margin-top: 5px;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+
+.test-result.success {
+  background-color: #e6f7e1;
+  color: #2e7d32;
+}
+
+.test-result.error {
+  background-color: #fde9e8;
+  color: #c62828;
+}
+
+@keyframes blink {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
 /* 角色選擇區域 */
 .character-selection {
   display: flex;

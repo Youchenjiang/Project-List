@@ -7,7 +7,7 @@ import '../styles/teddyBelle.css';
 import '../styles/characterSvg.css';
 import '../styles/characterAnimations.css';
 import { PUBLIC_PATH, GITHUB_PAGES_BASE } from '../data/config';
-import { createChatResponse } from '../services/openai';
+import { createChatResponse, testBackendConnection } from '../services/openai';
 
 const TeddyBelleInteraction = () => {
     // 狀態管理
@@ -16,7 +16,17 @@ const TeddyBelleInteraction = () => {
     const [conversation, setConversation] = useState([]);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
-    const [mood, setMood] = useState('happy'); // 'happy', 'sad', 'excited'
+    const [, setMood] = useState('happy'); // 'happy', 'sad', 'excited'
+    const [apiStatus, setApiStatus] = useState('ready'); // 'ready', 'loading', 'error'
+    const [connectionTestResult, setConnectionTestResult] = useState(null);
+    
+    // 測試 API 連接
+    const handleTestConnection = async () => {
+        setApiStatus('loading');
+        const result = await testBackendConnection();
+        setConnectionTestResult(result);
+        setApiStatus(result.success ? 'ready' : 'error');
+    };
     
     // 預設回應選項 - 作為 API 備用方案
     const defaultResponses = {
@@ -61,9 +71,7 @@ const TeddyBelleInteraction = () => {
                 resolve(responses[randomIndex]);
             }, Math.random() * 1000 + 500); // 500-1500ms 的隨機延遲
         });
-    };
-
-    // 處理訊息發送
+    };    // 處理訊息發送
     const handleSendMessage = async () => {
         if (message.trim() === '') return;
 
@@ -72,15 +80,20 @@ const TeddyBelleInteraction = () => {
         setConversation(prev => [...prev, userMessage]);
         setMessage('');
         setIsTyping(true);
-
-        try {
+        setApiStatus('loading');        try {
             let responseText;
             try {
                 // 嘗試使用 OpenAI API 獲取回應
+                console.log(`開始對 ${activeCharacter} 發送消息: ${message}`);
                 responseText = await createChatResponse(message, activeCharacter);
+                console.log(`收到來自 API 的回應`, responseText);
+                setApiStatus('ready');
             } catch (apiError) {
                 // API 錯誤時，無縫切換到預設回應
+                console.error('API 連接失敗，使用預設回應', apiError);
+                setApiStatus('error');
                 responseText = await getRandomResponse(activeCharacter);
+                console.log(`使用預設回應`, responseText);
             }
 
             // 處理回應
@@ -101,9 +114,10 @@ const TeddyBelleInteraction = () => {
                 setMood('sad');
             } else if (responseText.includes('驚訝') || responseText.includes('太棒了')) {
                 setMood('excited');
-            }
-        } catch (error) {
+            }        } catch (error) {
             // 如果所有嘗試都失敗，使用備用回應
+            console.error('所有回應方法都失敗', error);
+            setApiStatus('error');
             const fallbackResponse = await getRandomResponse(activeCharacter);
             setConversation(prev => [...prev, { 
                 sender: activeCharacter, 
@@ -304,13 +318,25 @@ const TeddyBelleInteraction = () => {
                     </div>
                 </div>
             </div>
-            
-            <div className="action-buttons">
+              <div className="action-buttons">
                 <button onClick={() => handleAction('hug')}>擁抱</button>
                 <button onClick={() => handleAction('play')}>玩耍</button>
                 <button onClick={() => handleAction('feed')}>餵食</button>
                 <button onClick={() => handleAction('wave')}>揮手</button>
                 <button onClick={() => handleAction('nod')}>點頭</button>
+            </div>
+              <div className="api-status">
+                {apiStatus === 'loading' && <span className="loading-status">正在連接 AI 服務...</span>}
+                {apiStatus === 'error' && <span className="error-status">使用備用回應 (API 連接失敗)</span>}
+                <span className="api-note">使用共享 API 金鑰 - 所有開發者可直接使用</span>
+                <button className="test-connection-btn" onClick={handleTestConnection}>測試後端連接</button>
+                {connectionTestResult && (
+                    <div className={`test-result ${connectionTestResult.success ? 'success' : 'error'}`}>
+                        {connectionTestResult.success 
+                            ? '✓ 後端連接正常' 
+                            : `✗ 連接失敗: ${connectionTestResult.error}`}
+                    </div>
+                )}
             </div>
         </div>
     );
