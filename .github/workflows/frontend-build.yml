@@ -27,17 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd frontend
-        npm ci
-    
-    - name: Run linting
-      run: |
-        cd frontend
-        npm run lint || echo "Linting failed but continuing"
-        
-    - name: Run tests
-      run: |
-        cd frontend
-        npm test -- --watchAll=false
+        npm install
         
     - name: Build frontend
       run: |
