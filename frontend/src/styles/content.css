@@ -48,3 +48,29 @@
 .welcome-page p {
   color: #666;
 }
+
+.project-info-page {
+    position: relative;
+    height: 100%;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.project-info-header {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.project-info-header h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 24px;
+}
+
+.close-button:hover {
+    color: #333;
+    transform: scale(1.1);
+}

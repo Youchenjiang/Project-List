@@ -1,0 +1,13 @@
+# 全局默認所有者
+* @Youchenjiang
+
+# 前端程式碼需要前端團隊審核
+/frontend/ @Youchenjiang
+
+# 後端程式碼需要後端團隊審核
+/backend/ @Youchenjiang
+
+# 配置文件由核心團隊成員審核
+*.yml @Youchenjiang
+*.md @Youchenjiang
+.github/ @Youchenjiang

@@ -1,8 +1,13 @@
+// TeddyBelleInteraction.js
+// 熊熊與貝兒互動頁面元件
+// 功能：提供與熊熊和玲娜貝兒的互動體驗，包含對話、動作和表情變化
+
 import React, { useState, useEffect } from 'react';
 import '../styles/teddyBelle.css';
 import '../styles/characterSvg.css';
 import '../styles/characterAnimations.css';
 import { PUBLIC_PATH, GITHUB_PAGES_BASE } from '../data/config';
+import { createChatResponse, testBackendConnection } from '../services/openai';
 
 const TeddyBelleInteraction = () => {
     // 狀態管理
@@ -10,57 +15,127 @@ const TeddyBelleInteraction = () => {
     const [message, setMessage] = useState('');
     const [conversation, setConversation] = useState([]);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
     const [, setMood] = useState('happy'); // 'happy', 'sad', 'excited'
+    const [apiStatus, setApiStatus] = useState('ready'); // 'ready', 'loading', 'error'
+    const [connectionTestResult, setConnectionTestResult] = useState(null);
     
-    // 圖片基礎路徑
-    const imgBasePath = window.location.hostname === 'localhost' 
-        ? `${GITHUB_PAGES_BASE}/assets/images/` 
-        : `${PUBLIC_PATH}/assets/images/`;
+    // 測試 API 連接
+    const handleTestConnection = async () => {
+        setApiStatus('loading');
+        const result = await testBackendConnection();
+        setConnectionTestResult(result);
+        setApiStatus(result.success ? 'ready' : 'error');
+    };
     
-    // 預設對話選項
-    const dialogOptions = {
+    // 預設回應選項 - 作為 API 備用方案
+    const defaultResponses = {
         teddy: [
-            '你好啊！我是熊熊，想跟我玩什麼遊戲呢？',
-            '我喜歡抱抱！要給我一個溫暖的抱抱嗎？',
-            '我餓了，你能給我一些蜂蜜嗎？',
-            '我們一起去冒險吧！'
+            '啊～真是太有趣了！我們繼續玩吧！',
+            '我最喜歡和你聊天了～',
+            '要不要一起去找蜂蜜吃呢？',
+            '你說得對！熊熊也是這樣想的！',
+            '嘿嘿，這讓我想起一個好玩的故事...',
+            '我們一起去森林探險好不好？',
+            '你真是我最好的朋友了！',
+            '這個主意太棒了！熊熊超喜歡的～',
+            '讓我們一起玩個遊戲吧！',
+            '你知道嗎？今天的陽光特別溫暖～'
         ],
         belle: [
-            '嗨！我是玲娜貝兒，今天過得如何？',
-            '我喜歡粉紅色的東西，你也喜歡嗎？',
-            '要不要一起玩遊戲？',
-            '我們來一起唱歌跳舞吧！',
-            '你能摸摸我的耳朵嗎？好癢呀！'
+            '啊啦，這真是太有趣了！',
+            '讓我想到了一個美麗的故事呢...',
+            '要不要聽聽我的小秘密？',
+            '我最喜歡和你這樣聊天了！',
+            '這個想法真棒，我們一起來實現吧！',
+            '好浪漫啊～讓我想到花園裡的玫瑰',
+            '你說得對！這就像魔法一樣美妙！',
+            '我們來跳個舞慶祝一下吧！',
+            '今天的你特別閃耀呢！',
+            '要不要一起去探索夢幻世界？'
         ]
     };
 
-    // 處理用戶輸入
-    const handleInputChange = (e) => {
-        setMessage(e.target.value);
-    };
+    // 圖片基礎路徑設定
+    const imgBasePath = window.location.hostname === 'localhost' 
+        ? `${GITHUB_PAGES_BASE}/assets/images/` 
+        : `${PUBLIC_PATH}/assets/images/`;
 
-    // 處理發送訊息
-    const handleSendMessage = () => {
+    // 取得隨機回應
+    const getRandomResponse = (character) => {
+        const responses = defaultResponses[character];
+        const randomIndex = Math.floor(Math.random() * responses.length);
+        // 加入延遲，模擬思考時間
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(responses[randomIndex]);
+            }, Math.random() * 1000 + 500); // 500-1500ms 的隨機延遲
+        });
+    };    // 處理訊息發送
+    const handleSendMessage = async () => {
         if (message.trim() === '') return;
 
-        // 添加用戶訊息到對話
-        const newConversation = [...conversation, { sender: 'user', text: message }];
-        setConversation(newConversation);
+        // 添加用戶訊息
+        const userMessage = { sender: 'user', text: message };
+        setConversation(prev => [...prev, userMessage]);
         setMessage('');
+        setIsTyping(true);
+        setApiStatus('loading');        try {
+            let responseText;
+            try {
+                // 嘗試使用 OpenAI API 獲取回應
+                console.log(`開始對 ${activeCharacter} 發送消息: ${message}`);
+                responseText = await createChatResponse(message, activeCharacter);
+                console.log(`收到來自 API 的回應`, responseText);
+                setApiStatus('ready');
+            } catch (apiError) {
+                // API 錯誤時，無縫切換到預設回應
+                console.error('API 連接失敗，使用預設回應', apiError);
+                setApiStatus('error');
+                responseText = await getRandomResponse(activeCharacter);
+                console.log(`使用預設回應`, responseText);
+            }
 
-        // 設置動畫狀態
-        setIsAnimating(true);
-        
-        // 模擬玩偶回應
-        setTimeout(() => {
-            // 使用activeCharacter直接獲取角色名稱
-            const randomResponse = dialogOptions[activeCharacter][Math.floor(Math.random() * dialogOptions[activeCharacter].length)];
-            
-            setConversation([...newConversation, { sender: activeCharacter, text: randomResponse }]);
-            setIsAnimating(false);
-        }, 1000);
+            // 處理回應
+            setConversation(prev => [...prev, { 
+                sender: activeCharacter, 
+                text: responseText 
+            }]);
+
+            // 觸發動畫效果
+            setIsAnimating(true);
+            setTimeout(() => setIsAnimating(false), 1000);
+
+            // 根據回應內容設置心情
+            if (responseText.includes('開心') || responseText.includes('高興') || 
+                responseText.includes('有趣') || responseText.includes('喜歡')) {
+                setMood('happy');
+            } else if (responseText.includes('難過') || responseText.includes('抱歉')) {
+                setMood('sad');
+            } else if (responseText.includes('驚訝') || responseText.includes('太棒了')) {
+                setMood('excited');
+            }        } catch (error) {
+            // 如果所有嘗試都失敗，使用備用回應
+            console.error('所有回應方法都失敗', error);
+            setApiStatus('error');
+            const fallbackResponse = await getRandomResponse(activeCharacter);
+            setConversation(prev => [...prev, { 
+                sender: activeCharacter, 
+                text: fallbackResponse 
+            }]);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
+    // 處理按Enter發送
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+    
     // 處理角色切換
     const switchCharacter = (character) => {
         setActiveCharacter(character);
@@ -70,58 +145,59 @@ const TeddyBelleInteraction = () => {
             ? '嗨！我是熊熊，很高興見到你！' 
             : '你好！我是玲娜貝兒，今天想一起玩耍嗎？';
         setConversation([{ sender: character, text: welcomeMessage }]);
-    };
-
-    // 處理互動動作
-    const handleAction = (action) => {
+    };    // 處理文字輸入改變
+    const handleInputChange = (e) => {
+        setMessage(e.target.value);
+    };    /**
+     * 處理互動動作
+     * @param {string} action - 動作類型：'hug', 'play', 'feed', 'wave', 'nod'
+     */    const handleAction = (action) => {
         setIsAnimating(true);
         
-        let newMood;
         let actionMessage;
         let animationClass = '';
         
+        // 更新角色表情和動作
         switch(action) {
             case 'hug':
-                newMood = 'happy';
+                setMood('happy');
                 animationClass = 'hug-animation';
                 actionMessage = activeCharacter === 'teddy' 
                     ? '熊熊感到被愛和溫暖！' 
                     : '玲娜貝兒給了你一個溫暖的擁抱！';
                 break;
             case 'play':
-                newMood = 'excited';
+                setMood('excited');
                 animationClass = 'play-animation';
                 actionMessage = activeCharacter === 'teddy' 
                     ? '熊熊開心地跳來跳去！' 
                     : '玲娜貝兒開心地轉圈圈！';
                 break;
             case 'feed':
-                newMood = 'happy';
+                setMood('happy');
                 animationClass = 'feed-animation';
                 actionMessage = activeCharacter === 'teddy' 
                     ? '熊熊滿足地吃著蜂蜜！' 
                     : '玲娜貝兒開心地吃著棉花糖！';
                 break;
             case 'wave':
-                newMood = 'happy';
+                setMood('happy');
                 animationClass = 'wave-animation';
                 actionMessage = activeCharacter === 'teddy' 
                     ? '熊熊向你揮手打招呼！' 
                     : '玲娜貝兒向你揮手打招呼！';
                 break;
             case 'nod':
-                newMood = 'happy';
+                setMood('happy');
                 animationClass = 'nod-animation';
                 actionMessage = activeCharacter === 'teddy' 
                     ? '熊熊點頭表示同意！' 
                     : '玲娜貝兒點頭表示同意！';
                 break;
             default:
-                newMood = 'happy';
+                setMood('happy');
                 actionMessage = '發生了有趣的事情！';
         }
-        
-        setMood(newMood);
         
         // 添加動畫類別到角色元素
         const characterElement = document.querySelector(activeCharacter === 'teddy' ? '.teddy-character' : '.belle-character');
@@ -137,14 +213,15 @@ const TeddyBelleInteraction = () => {
         setTimeout(() => {
             setIsAnimating(false);
         }, 1500);
-    };
-
-    // 初始化歡迎訊息
+    };    // 初始化歡迎訊息
     useEffect(() => {
         const welcomeMessage = activeCharacter === 'teddy' 
             ? '嗨！我是熊熊，很高興見到你！' 
             : '你好！我是玲娜貝兒，今天想一起玩耍嗎？';
-        setConversation([{ sender: activeCharacter, text: welcomeMessage }]);
+        
+        setConversation([
+            { sender: activeCharacter, text: welcomeMessage }
+        ]);
     }, [activeCharacter]);
 
     return (
@@ -190,8 +267,7 @@ const TeddyBelleInteraction = () => {
                 </div>
                 
                 <div className="conversation-area">
-                    <div className="messages">
-                        {conversation.map((msg, index) => (
+                    <div className="messages">                    {conversation.map((msg, index) => (
                             <div key={index} className={`message ${msg.sender}`}>
                                 {msg.sender === 'system' ? (
                                     <div className="system-message">{msg.text}</div>
@@ -211,6 +287,23 @@ const TeddyBelleInteraction = () => {
                                 )}
                             </div>
                         ))}
+
+                        {isTyping && (
+                            <div className={`message ${activeCharacter}`}>
+                                <div className="message-avatar">
+                                    <img 
+                                        src={`${imgBasePath}${activeCharacter}.svg`}
+                                        alt={activeCharacter === 'teddy' ? '熊熊' : '玲娜貝兒'}
+                                        className="avatar-icon"
+                                    />
+                                </div>
+                                <div className="typing-indicator">
+                                    <div className="typing-dot"></div>
+                                    <div className="typing-dot"></div>
+                                    <div className="typing-dot"></div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     
                     <div className="message-input">
@@ -219,19 +312,31 @@ const TeddyBelleInteraction = () => {
                             value={message} 
                             onChange={handleInputChange} 
                             placeholder="輸入訊息..." 
-                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                            onKeyPress={handleKeyPress}
                         />
                         <button onClick={handleSendMessage}>發送</button>
                     </div>
                 </div>
             </div>
-            
-            <div className="action-buttons">
+              <div className="action-buttons">
                 <button onClick={() => handleAction('hug')}>擁抱</button>
                 <button onClick={() => handleAction('play')}>玩耍</button>
                 <button onClick={() => handleAction('feed')}>餵食</button>
                 <button onClick={() => handleAction('wave')}>揮手</button>
                 <button onClick={() => handleAction('nod')}>點頭</button>
+            </div>
+              <div className="api-status">
+                {apiStatus === 'loading' && <span className="loading-status">正在連接 AI 服務...</span>}
+                {apiStatus === 'error' && <span className="error-status">使用備用回應 (API 連接失敗)</span>}
+                <span className="api-note">使用共享 API 金鑰 - 所有開發者可直接使用</span>
+                <button className="test-connection-btn" onClick={handleTestConnection}>測試後端連接</button>
+                {connectionTestResult && (
+                    <div className={`test-result ${connectionTestResult.success ? 'success' : 'error'}`}>
+                        {connectionTestResult.success 
+                            ? '✓ 後端連接正常' 
+                            : `✗ 連接失敗: ${connectionTestResult.error}`}
+                    </div>
+                )}
             </div>
         </div>
     );
