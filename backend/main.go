@@ -43,7 +43,7 @@ func main() {
 	r.Setup()
 
 	// 應用 CORS 中間件
-	handler := middleware.CORS(r.Mux)
+	handler := middleware.CORS(cfg)(r.Mux)
 	// 啟動服務器
 	serverAddr := "127.0.0.1:" + cfg.ServerPort // 明確綁定到 localhost IP
 	fmt.Println("開啟 CORS 支持...")

@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e9e85098-a925-4e6a-8007-85be202b2927" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ContentArea.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ContentArea.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/data/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/data/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/config.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +27,17 @@
     &quot;assignee&quot;: &quot;Youchenjiang&quot;
   }
 }</component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDON57g3M6VvPDc",
+        "number": 2
+      },
+      "lastSeen": 1747068901177
+    }
+  ]
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Youchenjiang/Project-List.git&quot;,
@@ -48,19 +58,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "#2 on develop",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -106,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744046824095</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="refactor: Enhance Security, Compatibility, and Backend Integration&#10;&#10;This commit introduces significant improvements across security, browser&#10;compatibility, and backend functionality.&#10;&#10;Key changes include:&#10;&#10;Security:&#10;- Migrated OpenAI API key from frontend to a secure backend proxy (localhost:8080).&#10;- Implemented API status indicators and connection testing in the frontend.&#10;&#10;Browser Compatibility:&#10;- Removed 'theme-color' meta-tag to resolve issues with Firefox and Opera.&#10;- Ensured iOS Safari compatibility with 'apple-mobile-web-app' meta-tags.&#10;- Retained 'theme_color' in 'manifest.json' for supported browsers.&#10;&#10;Backend:&#10;- Upgraded Go to version 1.23.0 (toolchain 1.24.3).&#10;- Integrated Swagger for API documentation.&#10;- Implemented configuration loading from environment variables.&#10;- Added CORS middleware for cross-origin request handling.&#10;- Secured API key handling through environment variables.&#10;- Bound server to 127.0.0.1 to address potential Windows Firewall issues.&#10;&#10;Frontend:&#10;- Added visual API status monitoring and backend connection testing.&#10;- Updated dependencies, including Express to 5.1.0 and CORS to 2.8.5.&#10;- Improved error handling with fallback mechanisms.&#10;- Enhanced debugging with detailed console logging.&#10;&#10;General:&#10;- Created run scripts for consistent execution.&#10;- Updated various HTTP utility libraries.">
+      <option name="closed" value="true" />
+      <created>1747068864008</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747068864008</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +149,7 @@
     <MESSAGE value="docs: completely restructure and expand project documentation&#10;&#10;- Rewrote entire README.md to reflect new full-stack architecture&#10;- Added detailed project structure section with directory tree visualization&#10;- Created comprehensive installation guides for both frontend and backend&#10;- Expanded tech stack information to include React and Go specifics&#10;- Added development workflow instructions for full-stack environment&#10;- Reorganized content with new table of contents structure&#10;- Updated contribution guidelines to match new project standards&#10;- Maintained all original project examples while integrating into new framework" />
     <MESSAGE value="docs: add acknowledgements section with development tool credits&#10;&#10;- Created new Acknowledgements section in README.md&#10;- Listed key development tools and their contributions:&#10;- Organized credits in bullet-point format with official links" />
     <MESSAGE value="feat: Add GitHub Pages deployment configuration&#10;- Added `homepage` field in `package.json` pointing to `https://youchenjiang.github.io/Project-List/`&#10;- Added `gh-pages` dependency for deploying the site to GitHub Pages&#10;- Added `predeploy` and `deploy` npm scripts for automated deployment process&#10;- Updated `config.js` to handle deployment environment:&#10;  - Added `BASE_URL` variable for different paths in development and production&#10;  - Added `PUBLIC_PATH` and `GITHUB_PAGES_BASE` variables for base path handling&#10;  - Implemented `getProjectPath()` function to resolve project paths correctly in both local and GitHub Pages environments&#10;- Updated `projects.js` to use `getProjectPath()` function for dynamic path generation&#10;- Minor update to `ContentArea` component to fix iframe closing tag format&#10;- Added lock files (`package-lock.json`)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add GitHub Pages deployment configuration&#10;- Added `homepage` field in `package.json` pointing to `https://youchenjiang.github.io/Project-List/`&#10;- Added `gh-pages` dependency for deploying the site to GitHub Pages&#10;- Added `predeploy` and `deploy` npm scripts for automated deployment process&#10;- Updated `config.js` to handle deployment environment:&#10;  - Added `BASE_URL` variable for different paths in development and production&#10;  - Added `PUBLIC_PATH` and `GITHUB_PAGES_BASE` variables for base path handling&#10;  - Implemented `getProjectPath()` function to resolve project paths correctly in both local and GitHub Pages environments&#10;- Updated `projects.js` to use `getProjectPath()` function for dynamic path generation&#10;- Minor update to `ContentArea` component to fix iframe closing tag format&#10;- Added lock files (`package-lock.json`)" />
+    <MESSAGE value="refactor: Enhance Security, Compatibility, and Backend Integration&#10;&#10;This commit introduces significant improvements across security, browser&#10;compatibility, and backend functionality.&#10;&#10;Key changes include:&#10;&#10;Security:&#10;- Migrated OpenAI API key from frontend to a secure backend proxy (localhost:8080).&#10;- Implemented API status indicators and connection testing in the frontend.&#10;&#10;Browser Compatibility:&#10;- Removed 'theme-color' meta-tag to resolve issues with Firefox and Opera.&#10;- Ensured iOS Safari compatibility with 'apple-mobile-web-app' meta-tags.&#10;- Retained 'theme_color' in 'manifest.json' for supported browsers.&#10;&#10;Backend:&#10;- Upgraded Go to version 1.23.0 (toolchain 1.24.3).&#10;- Integrated Swagger for API documentation.&#10;- Implemented configuration loading from environment variables.&#10;- Added CORS middleware for cross-origin request handling.&#10;- Secured API key handling through environment variables.&#10;- Bound server to 127.0.0.1 to address potential Windows Firewall issues.&#10;&#10;Frontend:&#10;- Added visual API status monitoring and backend connection testing.&#10;- Updated dependencies, including Express to 5.1.0 and CORS to 2.8.5.&#10;- Improved error handling with fallback mechanisms.&#10;- Enhanced debugging with detailed console logging.&#10;&#10;General:&#10;- Created run scripts for consistent execution.&#10;- Updated various HTTP utility libraries." />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: Enhance Security, Compatibility, and Backend Integration&#10;&#10;This commit introduces significant improvements across security, browser&#10;compatibility, and backend functionality.&#10;&#10;Key changes include:&#10;&#10;Security:&#10;- Migrated OpenAI API key from frontend to a secure backend proxy (localhost:8080).&#10;- Implemented API status indicators and connection testing in the frontend.&#10;&#10;Browser Compatibility:&#10;- Removed 'theme-color' meta-tag to resolve issues with Firefox and Opera.&#10;- Ensured iOS Safari compatibility with 'apple-mobile-web-app' meta-tags.&#10;- Retained 'theme_color' in 'manifest.json' for supported browsers.&#10;&#10;Backend:&#10;- Upgraded Go to version 1.23.0 (toolchain 1.24.3).&#10;- Integrated Swagger for API documentation.&#10;- Implemented configuration loading from environment variables.&#10;- Added CORS middleware for cross-origin request handling.&#10;- Secured API key handling through environment variables.&#10;- Bound server to 127.0.0.1 to address potential Windows Firewall issues.&#10;&#10;Frontend:&#10;- Added visual API status monitoring and backend connection testing.&#10;- Updated dependencies, including Express to 5.1.0 and CORS to 2.8.5.&#10;- Improved error handling with fallback mechanisms.&#10;- Enhanced debugging with detailed console logging.&#10;&#10;General:&#10;- Created run scripts for consistent execution.&#10;- Updated various HTTP utility libraries." />
   </component>
 </project>

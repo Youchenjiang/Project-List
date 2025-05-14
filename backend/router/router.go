@@ -14,9 +14,9 @@ import (
 
 // Router 處理HTTP路由
 type Router struct {
-	Mux        *http.ServeMux
-	OpenAIServ *services.OpenAIService
-	Projects   []Project
+	Mux           *http.ServeMux
+	OpenAIService *services.OpenAIService
+	Projects      []Project
 }
 
 // Project 定義項目結構
@@ -28,10 +28,9 @@ type Project struct {
 // NewRouter 創建新的路由器
 func NewRouter(cfg *config.Config) *Router {
 	openaiService := services.NewOpenAIService(cfg.OpenAIAPIKey, cfg.OpenAIBaseURL)
-
 	return &Router{
-		Mux:        http.NewServeMux(),
-		OpenAIServ: openaiService,
+		Mux:           http.NewServeMux(),
+		OpenAIService: openaiService,
 		Projects: []Project{
 			{ID: 1, Name: "Effect-Download"},
 			{ID: 2, Name: "Effect-Ripple"},
@@ -43,12 +42,11 @@ func NewRouter(cfg *config.Config) *Router {
 func (r *Router) Setup() {
 	// 根路由
 	r.Mux.HandleFunc("/", r.handleHome)
-
 	// API 測試端點
 	r.Mux.HandleFunc("/api/test", r.handleAPITest)
 
 	// OpenAI API 代理
-	r.Mux.HandleFunc("/api/openai/chat", r.OpenAIServ.HandleChatRequest)
+	r.Mux.HandleFunc("/api/openai/chat", r.OpenAIService.HandleChatRequest)
 
 	// Swagger 文檔
 	r.Mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
@@ -136,8 +134,8 @@ func (r *Router) setupProjectRoutes() {
 		proj := project // 創建副本避免閉包問題
 
 		// 項目主頁
-		r.Mux.HandleFunc("/"+proj.Name+"/", func(w http.ResponseWriter, req *http.Request) {
-			if req.URL.Path != "/"+proj.Name+"/" {
+		r.Mux.HandleFunc(path.Join("/", proj.Name, "/"), func(w http.ResponseWriter, req *http.Request) {
+			if req.URL.Path != path.Join("/", proj.Name, "/") {
 				http.NotFound(w, req)
 				return
 			}
@@ -147,8 +145,8 @@ func (r *Router) setupProjectRoutes() {
 		// 項目靜態資源
 		staticPath := path.Join("frontend", "public", "projects", proj.Name)
 		r.Mux.Handle(
-			"/"+proj.Name+"/static/",
-			http.StripPrefix("/"+proj.Name+"/static/", http.FileServer(http.Dir(staticPath))),
+			path.Join("/", proj.Name, "/static/"),
+			http.StripPrefix(path.Join("/", proj.Name, "/static/"), http.FileServer(http.Dir(staticPath))),
 		)
 	}
 }
