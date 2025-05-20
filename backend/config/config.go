@@ -36,7 +36,7 @@ func LoadConfig() *Config {
 	}
 
 	if origins := os.Getenv("ALLOWED_ORIGINS"); origins != "" {
-		config.AllowedOrigins = []string{origins}
+		config.AllowedOrigins = strings.Split(origins, ",")
 	}
 
 	return config
