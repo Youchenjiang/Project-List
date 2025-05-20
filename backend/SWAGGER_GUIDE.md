@@ -77,7 +77,7 @@ func (r *Router) Setup() {
     
     // 項目 API
     r.Mux.HandleFunc("/api/projects", r.handleGetProjects)
-    r.Mux.HandleFunc("/api/projects/", r.handleGetProjectByID) // 新增的路由
+    r.Mux.HandleFunc("/api/projects/{id}", r.handleGetProjectByID) // 新增的路由
     
     // ...existing code...
 }
