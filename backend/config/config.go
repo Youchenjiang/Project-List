@@ -16,7 +16,7 @@ type Config struct {
 func LoadConfig() *Config {
 	// 設置默認值
 	config := &Config{
-		OpenAIAPIKey:   "sk-Fs1TGwqvbBAaF0erqNBpubfEJESNYXc0OEEJGfdVtGEf9gJ1",
+		OpenAIAPIKey:   "",
 		OpenAIBaseURL:  "https://api.chatanywhere.tech/v1",
 		ServerPort:     "8080",
 		AllowedOrigins: []string{"http://localhost:3000", "http://localhost:8080"},
