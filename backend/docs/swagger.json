@@ -1,0 +1,230 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "專案管理後端 API，包含 OpenAI 聊天代理、專案管理功能等",
+        "title": "Project Manager API",
+        "termsOfService": "http://localhost:8080/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://localhost:8080/support",
+            "email": "support@project-manager.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "返回 API 歡迎訊息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "general"
+                ],
+                "summary": "主頁",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/openai/chat": {
+            "post": {
+                "description": "向 OpenAI API 發送聊天請求並返回回應",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "openai"
+                ],
+                "summary": "處理聊天請求",
+                "parameters": [
+                    {
+                        "description": "聊天請求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.OpenAIRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.OpenAIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "無法解析請求內容",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "405": {
+                        "description": "只支持 POST 方法",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "OpenAI 請求失敗",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projects": {
+            "get": {
+                "description": "返回系統中所有可用項目的列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "projects"
+                ],
+                "summary": "獲取所有項目",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/router.Project"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/test": {
+            "get": {
+                "description": "測試 API 是否正常運作",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "general"
+                ],
+                "summary": "API 測試端點",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/test": {
+            "get": {
+                "description": "返回 API 測試頁面 HTML",
+                "consumes": [
+                    "text/html"
+                ],
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "general"
+                ],
+                "summary": "API 測試頁面",
+                "responses": {
+                    "200": {
+                        "description": "HTML 頁面",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "router.Project": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.OpenAIRequest": {
+            "type": "object",
+            "properties": {
+                "character": {
+                    "type": "string",
+                    "enum": [
+                        "teddy",
+                        "belle"
+                    ],
+                    "example": "teddy"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "你好，我想聊聊天"
+                }
+            }
+        },
+        "services.OpenAIResponse": {
+            "type": "object",
+            "properties": {
+                "choices": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

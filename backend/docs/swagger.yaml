@@ -1,0 +1,152 @@
+basePath: /
+definitions:
+  router.Project:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  services.OpenAIRequest:
+    properties:
+      character:
+        enum:
+        - teddy
+        - belle
+        example: teddy
+        type: string
+      message:
+        example: 你好，我想聊聊天
+        type: string
+    type: object
+  services.OpenAIResponse:
+    properties:
+      choices:
+        items:
+          properties:
+            message:
+              properties:
+                content:
+                  type: string
+              type: object
+          type: object
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@project-manager.com
+    name: API Support
+    url: http://localhost:8080/support
+  description: 專案管理後端 API，包含 OpenAI 聊天代理、專案管理功能等
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://localhost:8080/terms/
+  title: Project Manager API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: 返回 API 歡迎訊息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 主頁
+      tags:
+      - general
+  /api/openai/chat:
+    post:
+      consumes:
+      - application/json
+      description: 向 OpenAI API 發送聊天請求並返回回應
+      parameters:
+      - description: 聊天請求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.OpenAIRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.OpenAIResponse'
+        "400":
+          description: 無法解析請求內容
+          schema:
+            type: string
+        "405":
+          description: 只支持 POST 方法
+          schema:
+            type: string
+        "500":
+          description: OpenAI 請求失敗
+          schema:
+            type: string
+      summary: 處理聊天請求
+      tags:
+      - openai
+  /api/projects:
+    get:
+      consumes:
+      - application/json
+      description: 返回系統中所有可用項目的列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/router.Project'
+            type: array
+      summary: 獲取所有項目
+      tags:
+      - projects
+  /api/test:
+    get:
+      consumes:
+      - application/json
+      description: 測試 API 是否正常運作
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: API 測試端點
+      tags:
+      - general
+  /test:
+    get:
+      consumes:
+      - text/html
+      description: 返回 API 測試頁面 HTML
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML 頁面
+          schema:
+            type: string
+      summary: API 測試頁面
+      tags:
+      - general
+schemes:
+- http
+- https
+swagger: "2.0"

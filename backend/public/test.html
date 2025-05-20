@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 測試頁面</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 100px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .response {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+        .status {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .links a {
+            display: inline-block;
+            margin-right: 15px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>API 測試頁面</h1>
+    
+    <div class="card">
+        <h2>聊天 API 測試</h2>
+        <div class="form-group">
+            <label for="character">角色</label>
+            <select id="character">
+                <option value="teddy">熊熊</option>
+                <option value="belle">貝兒</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">訊息</label>
+            <textarea id="message" placeholder="輸入您想發送的訊息..."></textarea>
+        </div>
+        
+        <button id="sendChat">發送</button>
+        
+        <div class="form-group">
+            <label>響應:</label>
+            <div id="chatResponse" class="response"></div>
+            <div id="chatStatus" class="status"></div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>API 測試</h2>
+        <div class="form-group">
+            <label for="apiUrl">API 端點</label>
+            <input type="text" id="apiUrl" value="/api/test" placeholder="輸入 API 端點路徑，例如 /api/test">
+        </div>
+        
+        <button id="testApi">測試</button>
+        
+        <div class="form-group">
+            <label>響應:</label>
+            <div id="apiResponse" class="response"></div>
+            <div id="apiStatus" class="status"></div>
+        </div>
+    </div>
+    
+    <div class="links">
+        <a href="/">返回主頁</a>
+        <a href="/swagger/index.html">Swagger API 文檔</a>
+    </div>
+    
+    <script>
+        document.getElementById('sendChat').addEventListener('click', async function() {
+            const character = document.getElementById('character').value;
+            const message = document.getElementById('message').value;
+            const responseDiv = document.getElementById('chatResponse');
+            const statusDiv = document.getElementById('chatStatus');
+            
+            if (!message.trim()) {
+                statusDiv.textContent = '請輸入訊息';
+                return;
+            }
+            
+            statusDiv.textContent = '發送中...';
+            responseDiv.textContent = '';
+            
+            try {
+                const response = await fetch('/api/openai/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        character,
+                        message
+                    })
+                });
+                
+                const data = await response.json();
+                statusDiv.textContent = `狀態: ${response.status} ${response.statusText}`;
+                
+                if (response.ok) {
+                    responseDiv.textContent = data.choices[0].message.content;
+                } else {
+                    responseDiv.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                statusDiv.textContent = `錯誤: ${error.message}`;
+                responseDiv.textContent = '請求失敗';
+            }
+        });
+        
+        document.getElementById('testApi').addEventListener('click', async function() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const responseDiv = document.getElementById('apiResponse');
+            const statusDiv = document.getElementById('apiStatus');
+            
+            if (!apiUrl.trim()) {
+                statusDiv.textContent = '請輸入 API 端點';
+                return;
+            }
+            
+            statusDiv.textContent = '請求中...';
+            responseDiv.textContent = '';
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                statusDiv.textContent = `狀態: ${response.status} ${response.statusText}`;
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                statusDiv.textContent = `錯誤: ${error.message}`;
+                responseDiv.textContent = '請求失敗';
+            }
+        });
+    </script>
+</body>
+</html>

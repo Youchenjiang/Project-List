@@ -23,6 +23,7 @@ A collection of small, interactive projects designed to help you learn and explo
     - [Backend Setup](#backend-setup)
     - [Full-Stack Development](#full-stack-development)
     - [Adding New Features](#adding-new-features)
+  - [CI/CD Setup](#cicd-setup)
   - [Projects and Features](#projects-and-features)
     - [Frontend Application](#frontend-application)
     - [Backend Service](#backend-service)
@@ -191,8 +192,8 @@ Follow these steps to set up and use the project:
 4. **Development Environment**
 
    The frontend is built with React and uses the following key dependencies:
-   - React v19.1.0
-   - React Router v7.5.0
+   - React v18.2.0
+   - React Router v6.14.1
    - Testing libraries for unit and integration tests
 
 ### Backend Setup
@@ -279,6 +280,39 @@ Follow these steps to set up and use the project:
    - Update this README.md with information about your new feature
    - Include code comments explaining complex logic
    - Consider adding a demo or screenshot if applicable
+
+## CI/CD Setup
+
+This project uses GitHub Actions for continuous integration and deployment. The workflow configurations can be found in the `.github/workflows` directory.
+
+### Frontend Build Workflow
+
+The frontend build workflow (`frontend-build.yml`) automatically runs when changes are pushed to the frontend code. It performs the following steps:
+
+1. Sets up a Node.js environment
+2. Installs dependencies
+3. Runs linting checks
+4. Executes tests
+5. Builds the frontend application
+6. Archives build artifacts
+
+### Pull Request Process
+
+When creating a pull request:
+
+1. The CI workflow will automatically run
+2. All checks must pass before merging
+3. At least one approving review is required
+4. Reviews must be from someone other than the last pusher
+
+### Manual Deployment
+
+The project can be manually deployed to GitHub Pages using:
+
+```bash
+cd frontend
+npm run deploy
+```
 
 ## Projects and Features
 
