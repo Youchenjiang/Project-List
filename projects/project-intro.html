@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project List - 專案集合介紹</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        header {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin: 10px 0 0;
+            opacity: 0.8;
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            margin: 0 1rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            background-color: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            margin: 0 0 1rem;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .project-description {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .project-button {
+            display: inline-block;
+            padding: 0.6rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .project-button:hover {
+            background-color: #2980b9;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tech-item {
+            padding: 0.3rem 0.8rem;
+            background-color: var(--light-bg);
+            border-radius: 99px;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        .feature-item {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .structure-container {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 0.9em;
+            background-color: #f7f7f7;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        pre {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        .installation-steps {
+            counter-reset: step;
+            padding-left: 0;
+        }
+
+        .installation-steps li {
+            position: relative;
+            counter-increment: step;
+            padding-left: 40px;
+            margin-bottom: 1.5rem;
+            list-style: none;
+        }
+
+        .installation-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 0.5rem 0;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Project List</h1>
+            <p class="subtitle">一系列小型互動式專案集合，旨在幫助您學習和探索各種前端功能與技術。</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#overview">專案概述</a></li>
+            <li><a href="#projects">專案展示</a></li>
+            <li><a href="#features">功能特色</a></li>
+            <li><a href="#structure">專案結構</a></li>
+            <li><a href="#install">安裝與使用</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>專案概述</h2>
+            <p>Project List 是一個集合多種互動效果與功能的專案庫，旨在展示現代網頁前端開發的各種技術與設計模式。它既是初學者的學習資源，也是開發者的靈感來源。</p>
+            <p>專案最大的特色在於：<strong>每個子專案都可以獨立運行</strong>，即使與主框架分離。這意味著你可以單獨取用任何一個效果或功能，並將其整合到自己的專案中。</p>
+
+            <div class="tech-stack">
+                <span class="tech-item">React.js</span>
+                <span class="tech-item">CSS Modules</span>
+                <span class="tech-item">Echarts</span>
+                <span class="tech-item">Go</span>
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">JavaScript</span>
+                <span class="tech-item">OpenAI API</span>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>專案展示</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-image">↓</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Download Effect</h3>
+                        <p class="project-description">具有暫停、繼續和取消功能的圓形進度條，展示圓型動畫效果。</p>
+                        <a href="./Effect-Download/index.html" class="project-button">查看專案</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">💧</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Ripple Effect</h3>
+                        <p class="project-description">具有延遲效果的三重波紋動畫，展示疊加的視覺效果。</p>
+                        <a href="./Effect-Ripple/index.html" class="project-button">查看專案</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">🧸</div>
+                    <div class="project-content">
+                        <h3 class="project-title">熊熊與貝兒</h3>
+                        <p class="project-description">與可愛的玩偶熊熊和貝兒互動的有趣頁面，展示角色互動效果。</p>
+                        <a href="javascript:alert('此功能需要在主框架中運行');" class="project-button">查看專案</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">🗺️</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Visual Map</h3>
+                        <p class="project-description">互動式資料視覺化地圖展示，包含臺灣各縣市的人口和用戶分佈數據。</p>
+                        <a href="./Visual Map/index.html" class="project-button">查看專案</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">🤖</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Execute OpenAI (Python)</h3>
+                        <p class="project-description">Python 串接 OpenAI API 的 CLI 對話範例，以諸葛亮風格回應。</p>
+                        <a href="./Execute-OpenAI/index.html" class="project-button">查看專案</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>功能特色</h2>
+            <ul class="features-list">
+                <li class="feature-item">
+                    <strong>獨立運行</strong>: 每個專案都可以脫離主框架獨立執行，方便學習特定功能
+                </li>
+                <li class="feature-item">
+                    <strong>模組化設計</strong>: 所有功能都以模組化方式開發，便於理解和整合
+                </li>
+                <li class="feature-item">
+                    <strong>互動式效果</strong>: 豐富的互動效果展示，包括動畫、過渡和響應式設計
+                </li>
+                <li class="feature-item">
+                    <strong>資料視覺化</strong>: 使用 Echarts 進行資料視覺化，展示複雜數據的圖形化呈現
+                </li>
+                <li class="feature-item">
+                    <strong>AI 整合</strong>: 展示與 OpenAI API 的整合，呈現人工智能應用場景
+                </li>
+                <li class="feature-item">
+                    <strong>自適應界面</strong>: 所有專案均設計為在不同尺寸的裝置上展示良好
+                </li>
+            </ul>
+        </section>
+
+        <section id="structure">
+            <h2>專案結構</h2>
+            <div class="structure-container">
+                <pre>
+Project-List/
+├── frontend/              # 前端React應用
+│   ├── public/            # 靜態檔案和資源
+│   │   ├── assets/        # 靜態資源
+│   │   │   ├── images/    # 圖片
+│   │   │   └── icons/     # 圖示
+│   │   ├── projects/      # 專案範例(每個可獨立執行)
+│   │   │   ├── Effect-Download/ # 下載進度效果
+│   │   │   ├── Effect-Ripple/   # 波紋動畫效果
+│   │   │   ├── Execute-OpenAI/  # OpenAI API 整合
+│   │   │   └── Visual Map/      # 地圖視覺化
+│   ├── src/               # 原始碼
+│   │   ├── components/    # 可複用UI元件
+│   │   ├── context/       # React狀態管理上下文
+│   │   ├── styles/        # 按元件組織的CSS樣式
+│   │   └── data/          # 資料檔案
+├── backend/               # 後端服務
+│   ├── go.mod             # Go模組依賴項
+│   └── main.go            # 主Go伺服器檔案</pre>
+            </div>
+            <p>這種結構設計使得每個專案都能夠：</p>
+            <ul>
+                <li>包含完整的獨立HTML、CSS和JavaScript檔案</li>
+                <li>不依賴外部框架可直接運行</li>
+                <li>容易被提取到任何其他專案中使用</li>
+            </ul>
+        </section>
+
+        <section id="install">
+            <h2>安裝與使用</h2>
+            <p>Project List 提供了兩種使用方式：直接訪問獨立專案，或者設置完整開發環境。</p>
+
+            <h3>方法一：直接訪問獨立專案</h3>
+            <p>每個專案都設計為可獨立執行，只需在瀏覽器中開啟對應的 HTML 檔案即可：</p>
+            <ul>
+                <li>點擊上方的「查看專案」按鈕</li>
+                <li>或直接瀏覽 <code>frontend/public/projects/</code> 目錄下的專案</li>
+            </ul>
+
+            <h3>方法二：設置完整開發環境</h3>
+            <ol class="installation-steps">
+                <li>
+                    <strong>複製倉庫</strong><br>
+                    <code>git clone https://github.com/Youchenjiang/Project-List.git</code><br>
+                    <code>cd Project-List</code>
+                </li>
+                <li>
+                    <strong>安裝依賴並啟動應用</strong><br>
+                    <code>cd frontend</code><br>
+                    <code>npm install</code><br>
+                    <code>npm start</code>
+                </li>
+                <li>
+                    <strong>瀏覽應用</strong><br>
+                    開啟瀏覽器，訪問 <code>http://localhost:3000</code>
+                </li>
+                <li>
+                    <strong>（可選）運行後端服務</strong><br>
+                    <code>cd ../backend</code><br>
+                    <code>go mod download</code><br>
+                    <code>go run main.go</code>
+                </li>
+            </ol>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Project List - 一個開源的互動式專案集合</p>        <p>
+            <a href="https://github.com/Youchenjiang/Project-List" target="_blank" rel="noopener noreferrer">GitHub 倉庫</a> |
+            <a href="https://youchenjiang.github.io/Project-List/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>
+        </p>
+    </footer>
+</body>
+
+</html>
