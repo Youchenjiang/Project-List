@@ -34,4 +34,12 @@ export const projects = [
     description: "互動式資料視覺化地圖展示。",
     reference: `${BASE_URL}/Visual Map/index.html`,
   },
+  {
+    id: 5,
+    name: "密碼安全檢查",
+    path: getProjectPath("projects/Password-Check/index.html"),
+    icon: "🔐",
+    description: "檢查密碼是否外洩並分析密碼強度的工具。",
+    reference: `${BASE_URL}/Password-Check/index.html`,
+  },
 ];
