@@ -23,7 +23,6 @@ Thumbs.db
 
 # 編輯器和IDE檔案
 .idea/
-.vscode/
 *.swp
 *.swo
 
