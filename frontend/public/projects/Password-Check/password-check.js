@@ -1,3 +1,5 @@
+/* global Toastify */
+
 document.addEventListener('DOMContentLoaded', function () {
     const passwordInput = document.getElementById('password-input');
     const toggleButton = document.getElementById('toggle-password');
@@ -10,6 +12,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const strengthAnalysis = document.getElementById('strength-analysis');
     const strengthDetails = document.getElementById('strength-details');
     const crackTime = document.getElementById('crack-time');
+
+    // 使用 Toastify 顯示通知
+    function showNotification(message) {
+        // 檢查 Toastify 是否可用
+        if (typeof Toastify === 'undefined') {
+            // 降級到原生 alert
+            alert(message);
+            return;
+        }
+
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "bottom",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "#e74c3c"
+            }
+        }).showToast();
+    }
 
     // 硬體配置設定 - 基於實際測試數據和公開基準
     // hashRate 單位：每秒雜湊次數 (hashes per second)
