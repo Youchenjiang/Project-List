@@ -12,14 +12,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const crackTime = document.getElementById('crack-time');
 
     // 硬體配置設定 - 基於實際測試數據和公開基準
+    // hashRate 單位：每秒雜湊次數 (hashes per second)
     const hardwareConfigs = {
-        'cpu-single': { name: '單核心 CPU (Intel i5-12400 舉例)', hashRate: 1e3 },
-        'cpu-multi': { name: '多核心 CPU (AMD Ryzen 9 7950X 舉例)', hashRate: 1e5 },
-        'gpu-entry': { name: '入門級消費 GPU (GTX 1660 舉例)', hashRate: 1e6 },
-        'gpu-consumer': { name: '旗艦消費 GPU (RTX 5090)', hashRate: 4.5e10 },
-        'gpu-datacenter': { name: '最強資料中心 GPU (B200 舉例)', hashRate: 1.2e11 },
-        'gpu-cluster': { name: 'GPU 叢集 (4x B200)', hashRate: 4.8e11 },
-        'asic': { name: 'ASIC 礦機 (Antminer S19 Pro)', hashRate: 1.1e14 }
+        'cpu-single': { name: '單核心 CPU (Intel i5-12400 舉例)', hashRate: 1e3 },     // 1 千次/秒
+        'cpu-multi': { name: '多核心 CPU (AMD Ryzen 9 7950X 舉例)', hashRate: 1e5 },   // 10 萬次/秒
+        'gpu-entry': { name: '入門級消費 GPU (GTX 1660 舉例)', hashRate: 1e6 },        // 100 萬次/秒
+        'gpu-consumer': { name: '旗艦消費 GPU (RTX 5090)', hashRate: 4.5e10 },         // 450 億次/秒
+        'gpu-datacenter': { name: '最強資料中心 GPU (B200 舉例)', hashRate: 1.2e11 },  // 1200 億次/秒
+        'gpu-cluster': { name: 'GPU 叢集 (4x B200)', hashRate: 4.8e11 },              // 4800 億次/秒
+        'asic': { name: 'ASIC 礦機 (Antminer S19 Pro)', hashRate: 1.1e14 }            // 110 兆次/秒
     };
 
     // 切換密碼顯示/隱藏
