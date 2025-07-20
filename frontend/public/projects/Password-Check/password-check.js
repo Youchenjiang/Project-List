@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const config = hardwareConfigs[hardwareType];
 
         // 使用不依賴 BigInt 的簡易估算方式
-        let estimatedTime;
+        let estimatedTime = '無法計算';
         try {
             // 使用對數運算避免溢位
             // log(chars^length) = length * log(chars)
