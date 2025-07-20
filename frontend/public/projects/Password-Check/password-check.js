@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkButton.addEventListener('click', function () {
         const password = passwordInput.value;
         if (!password) {
-            alert('請輸入密碼');
+            showNotification('請輸入密碼', 'error');
             return;
         }
 
