@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
         'asic': { name: 'ASIC 礦機 (Antminer S19 Pro)', hashRate: 1.1e14 }
     };
 
+    // 整頁監聽 Enter 鍵觸發檢查
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // 防止表單提交
+            checkButton.click(); // 觸發檢查按鈕點擊事件
+        }
+    });
+
     // 切換密碼顯示/隱藏
     toggleButton.addEventListener('click', function () {
         if (passwordInput.type === 'password') {
