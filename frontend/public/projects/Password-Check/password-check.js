@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return { found: false };
         } catch (error) {
-            console.error('HIBP API 請求失敗', error);
+            console.error('HIBP API 請求失敗:', error.message || error);
             return { found: false, error: true };
         }
     }
