@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         } catch (error) {
-            console.error('計算破解時間時發生錯誤', error);
+            console.error('Error calculating crack time:', error.message || error, error.stack || '');
             estimatedTime = '計算出錯';
         }
 
