@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Error calculating crack time:', error.message || error, error.stack || '');
-            estimatedTime = '計算出錯';
+            estimatedTime = '計算時發生錯誤，請重試';
         }
 
         return {
