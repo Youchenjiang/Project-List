@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密碼安全檢查工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>密碼安全檢查工具</h1>
+        <p class="intro">此工具可以檢查您的密碼是否出現在已知的資料外洩清單中，並提供密碼強度估算。</p>
+
+        <div class="password-check-container">
+            <div class="form-group">
+                <label for="password-input">請輸入要檢查的密碼：</label>
+                <div class="password-input-group">
+                    <input type="password" id="password-input" placeholder="輸入密碼">
+                    <button id="toggle-password" type="button" aria-label="顯示/隱藏密碼">
+                        <span class="eye-icon">👁️</span>
+                    </button>
+                </div>
+
+                <div class="hardware-selection">
+                    <label for="hardware-select">破解硬體配置：</label>
+                    <select id="hardware-select">
+                        <option value="cpu-single">單核心 CPU (Intel i5-12400 舉例) - 1,000 H/s</option>
+                        <option value="cpu-multi">多核心 CPU (AMD Ryzen 9 7950X 舉例) - 100,000 H/s</option>
+                        <option value="gpu-entry">入門級消費 GPU (GTX 1660 舉例) - 1,000,000 H/s</option>
+                        <option value="gpu-consumer" selected>旗艦消費 GPU (RTX 5090) - 45,000,000,000 H/s</option>
+                        <option value="gpu-datacenter">最強資料中心 GPU (B200 舉例) - 120,000,000,000 H/s</option>
+                        <option value="gpu-cluster">GPU 叢集 (4x B200) - 480,000,000,000 H/s</option>
+                        <option value="asic">ASIC 礦機 (Antminer S19 Pro) - 110,000,000,000,000 H/s</option>
+                    </select>
+                </div>
+
+                <button id="check-button" class="primary-button">檢查密碼安全性</button>
+            </div>
+
+            <div id="loading" class="loading-container hidden">
+                <div class="spinner"></div>
+                <p>檢查中...</p>
+            </div>
+
+            <div id="result-container" class="result-container hidden">
+                <div id="hash-info" class="info-section">
+                    <h3>SHA-1 雜湊值</h3>
+                    <p id="hash-value"></p>
+                </div>
+
+                <div id="hibp-result" class="result-section"></div>
+
+                <div id="strength-analysis" class="strength-section hidden">
+                    <h3>密碼強度分析</h3>
+                    <div id="strength-details"></div>
+                    <div id="crack-time"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>為什麼安全且準確？</h3>
+            <p><strong>隱私保護：</strong>本工具使用 HIBP (Have I Been Pwned) API 的 k-匿名查詢模型，僅傳送密碼 SHA-1
+                雜湊值的前5碼到伺服器。您的完整密碼和完整雜湊值永遠不會離開您的裝置。</p>
+
+            <p><strong>準確性保證：</strong>雖然只傳送前5碼，但伺服器會回傳數百個相關雜湊後綴，本工具在本地比對完整的40碼雜湊值，確保100%準確匹配。SHA-1雜湊碰撞機率極低（約2^-140），可確保結果可靠。
+            </p>
+
+            <p><strong>工作原理：</strong></p>
+            <ol>
+                <li>本地計算密碼的 SHA-1 雜湊值（40個十六進位字符）</li>
+                <li>僅傳送前5碼到 HIBP 伺服器</li>
+                <li>伺服器回傳所有以這5碼開頭的雜湊後綴清單</li>
+                <li>本地比對剩餘35碼，找到完全匹配的項目</li>
+            </ol>
+
+            <p>原始程式碼基於
+                <a href="https://blog.darkthread.net/blog/pwd-hibp-check/" target="_blank"
+                    rel="noopener noreferrer">黑暗執行緒部落格</a>
+                的 PowerShell 版本。
+            </p>
+
+            <h3>硬體破解速率來源</h3>
+            <ul>
+                <li><strong>CPU 數據：</strong>基於 Hashcat 基準測試和公開測試報告</li>
+                <li><strong>消費級 GPU：</strong>參考 RTX 5090 官方規格和 SHA-1 破解基準</li>
+                <li><strong>資料中心 GPU：</strong>基於 NVIDIA B200 (Blackwell 架構) 的理論算力估算</li>
+                <li><strong>ASIC 數據：</strong>基於 Antminer S19 Pro 的實際 SHA-256 算力轉換估算</li>
+                <li><strong>叢集數據：</strong>基於多個高階 GPU 並行計算的理論值</li>
+            </ul>
+            <p><em>註：B200 為目前最強的資料中心 GPU (2025年)，實際破解速度會因硬體配置、溫度、軟體優化等因素而有所差異。</em></p>
+        </div>
+    </div>
+
+    <script src="password-check.js"></script>
+</body>
+
+</html>
